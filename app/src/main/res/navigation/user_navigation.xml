@@ -7,20 +7,27 @@
 
     <fragment
         android:id="@+id/user_navigation_home"
-        android:name="com.example.badmintonbookingapp.ui.home.HomeFragment"
+        android:name="com.example.badmintonbookingapp.ui.user.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/user_navigation_booking"
-        android:name="com.example.badmintonbookingapp.ui.booking.BookingFragment"
+        android:name="com.example.badmintonbookingapp.ui.user.booking.BookingFragment"
         android:label="Booking"
         tools:layout="@layout/fragment_booking" />
 
     <fragment
         android:id="@+id/user_navigation_order"
-        android:name="com.example.badmintonbookingapp.ui.order.OrderFragment"
+        android:name="com.example.badmintonbookingapp.ui.user.order.OrderFragment"
         android:label="Order"
         tools:layout="@layout/fragment_order" />
-    
+
+    <fragment
+        android:id="@+id/user_navigation_my_account"
+        android:name="com.example.badmintonbookingapp.ui.user.my_account.UserMyAccountFragment"
+        android:label="My Account"
+        tools:layout="@layout/fragment_user_my_account" />
+
+
 </navigation>

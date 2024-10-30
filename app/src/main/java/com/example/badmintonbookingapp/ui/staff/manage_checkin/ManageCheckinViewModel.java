@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.ui.manage_checkin;
+package com.example.badmintonbookingapp.ui.staff.manage_checkin;
 
 import androidx.lifecycle.ViewModel;
 

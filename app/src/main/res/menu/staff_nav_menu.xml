@@ -14,4 +14,9 @@
         android:id="@+id/staff_navigation_manage_checkin"
         android:icon="@drawable/checkin_icon"
         android:title="Manage Check-in" />
+
+    <item
+        android:id="@+id/staff_navigation_my_account"
+        android:icon="@drawable/account_icon"
+        android:title="My Account" />
 </menu>
