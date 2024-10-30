@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/staff_navigation_user_booking"
+        android:icon="@drawable/shuttlecock_icon"
+        android:title="User Booking" />
+
+    <item
+        android:id="@+id/staff_navigation_user_payment"
+        android:icon="@drawable/order_icon"
+        android:title="User Payment" />
+
+    <item
+        android:id="@+id/staff_navigation_manage_checkin"
+        android:icon="@drawable/checkin_icon"
+        android:title="Manage Check-in" />
+</menu>
