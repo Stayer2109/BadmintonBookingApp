@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/staff_navigation_home"
+        android:icon="@drawable/house_icon"
+        android:title="Home" />
+
+    <item
         android:id="@+id/staff_navigation_user_booking"
         android:icon="@drawable/shuttlecock_icon"
         android:title="User Booking" />
@@ -14,4 +19,9 @@
         android:id="@+id/staff_navigation_manage_checkin"
         android:icon="@drawable/checkin_icon"
         android:title="Manage Check-in" />
+
+    <item
+        android:id="@+id/staff_navigation_my_account"
+        android:icon="@drawable/account_icon"
+        android:title="My Account" />
 </menu>

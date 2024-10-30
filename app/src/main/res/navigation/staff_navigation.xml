@@ -3,21 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/staff_navigation"
-    app:startDestination="@id/staff_navigation_user_booking">
+    app:startDestination="@id/staff_navigation_home">
 
     <fragment
+        android:id="@+id/staff_navigation_home"
+        android:name="com.example.badmintonbookingapp.ui.staff.home.StaffHomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_staff_home" />
+    <fragment
         android:id="@+id/staff_navigation_manage_checkin"
-        android:name="com.example.badmintonbookingapp.ui.manage_checkin.ManageCheckinFragment"
+        android:name="com.example.badmintonbookingapp.ui.staff.manage_checkin.ManageCheckinFragment"
         android:label="Manage Check-in"
         tools:layout="@layout/fragment_manage_checkin" />
     <fragment
         android:id="@+id/staff_navigation_user_booking"
-        android:name="com.example.badmintonbookingapp.ui.user_booking.UserBookingFragment"
+        android:name="com.example.badmintonbookingapp.ui.staff.user_booking.UserBookingFragment"
         android:label="User Booking"
         tools:layout="@layout/fragment_user_booking" />
     <fragment
         android:id="@+id/staff_navigation_user_payment"
-        android:name="com.example.badmintonbookingapp.ui.user_payment.UserPaymentFragment"
+        android:name="com.example.badmintonbookingapp.ui.staff.user_payment.UserPaymentFragment"
         android:label="User Payment"
         tools:layout="@layout/fragment_user_payment" />
+    <fragment
+        android:id="@+id/staff_navigation_my_account"
+        android:name="com.example.badmintonbookingapp.ui.staff.my_account.StaffMyAccountFragment"
+        android:label="My Account"
+        tools:layout="@layout/fragment_staff_my_account" />
 </navigation>

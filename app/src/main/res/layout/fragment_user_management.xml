@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.staff.user_payment.UserPaymentFragment">
+    tools:context=".ui.admin.user_management.UserManagementFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="This is user payment fragment" />
+        android:text="This is user management fragment" />
 
 </FrameLayout>

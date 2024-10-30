@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/admin_navigation_user_management"
+        android:icon="@drawable/user_management_icon"
+        android:title="User Management" />
+
+    <item
+        android:id="@+id/admin_navigation_my_account"
+        android:icon="@drawable/account_icon"
+        android:title="My Account" />
+</menu>
