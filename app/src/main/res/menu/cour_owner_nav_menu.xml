@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/cour_owner_navigation_home"
+        android:icon="@drawable/house_icon"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/cour_owner_navigation_yard_management"
+        android:icon="@drawable/order_icon"
+        android:title="Yard Management" />
+
+    <item
+        android:id="@+id/cour_owner_navigation_staff_management"
+        android:icon="@drawable/order_icon"
+        android:title="Staff Management" />
+</menu>
