@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.ui.user_booking;
+package com.example.badmintonbookingapp.ui.staff.user_booking;
 
 import androidx.lifecycle.ViewModel;
 

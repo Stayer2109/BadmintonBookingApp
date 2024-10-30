@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.ui.order;
+package com.example.badmintonbookingapp.ui.user.booking;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import com.example.badmintonbookingapp.R;
 
-public class OrderFragment extends Fragment {
+public class BookingFragment extends Fragment {
 
-    private OrderViewModel mViewModel;
+    private BookingViewModel mViewModel;
 
-    public static OrderFragment newInstance() {
-        return new OrderFragment();
+    public static BookingFragment newInstance() {
+        return new BookingFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_order, container, false);
+        return inflater.inflate(R.layout.fragment_booking, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(BookingViewModel.class);
         // TODO: Use the ViewModel
     }
 

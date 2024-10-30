@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.badmintonbookingapp.databinding.AdminMainLayoutBinding;
 import com.example.badmintonbookingapp.databinding.StaffMainLayoutBinding;
 import com.example.badmintonbookingapp.databinding.UserMainLayoutBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private String userRole;
     private StaffMainLayoutBinding staffBinding;  // Use UserMainLayoutBinding for user_main_layout
     private UserMainLayoutBinding userBinding;  // Use StaffMainLayoutBinding for staff_main_layout
+    private AdminMainLayoutBinding adminBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,16 @@ public class MainActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
+        } else if ("Admin".equals(userRole)) {
+            adminBinding = AdminMainLayoutBinding.inflate(getLayoutInflater());
+            setContentView(adminBinding.getRoot());  // Load user-specific layout (user_main_layout)
+
+            // Adjust padding to fit system bars for immersive experience
+            ViewCompat.setOnApplyWindowInsetsListener(adminBinding.getRoot(), (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
         } else {
             setContentView(R.layout.activity_main);  // Default layout for unknown roles
         }
@@ -95,6 +107,20 @@ public class MainActivity extends AppCompatActivity {
 
             // Link BottomNavigationView with NavController
             NavigationUI.setupWithNavController(staffBinding.staffNavView, navController);
+        } else if (adminBinding != null && "Admin".equals(userRole)) {
+            // Set up AppBarConfiguration with top-level destinations
+            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.admin_navigation_user_management, R.id.admin_navigation_my_account)
+                    .build();
+
+            // Set up NavController with the NavHostFragment from user_main_layout
+            NavController navController = Navigation.findNavController(this, R.id.admin_nav_host_fragment_activity_main);
+
+            // Link ActionBar with NavController
+            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+            // Link BottomNavigationView with NavController
+            NavigationUI.setupWithNavController(adminBinding.adminNavView, navController);
         }
     }
 
@@ -107,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
         } else if ("Staff".equals(userRole) && staffBinding != null) {
             // Handle Up navigation for staff layout
             navController = Navigation.findNavController(this, R.id.staff_nav_host_fragment_activity_main);
+        } else if ("Admin".equals(userRole) && staffBinding != null) {
+            // Handle Up navigation for staff layout
+            navController = Navigation.findNavController(this, R.id.admin_nav_host_fragment_activity_main);
         } else {
             return super.onSupportNavigateUp();
         }
@@ -115,6 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Example method to retrieve user role; replace with actual retrieval logic
     private String getUserRole() {
-        return "Staff";  // Temporary hardcoded value for demonstration
+        return "Admin";  // Temporary hardcoded value for demonstration
     }
 }

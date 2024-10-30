@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.ui.user_payment;
+package com.example.badmintonbookingapp.ui.staff.manage_checkin;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import com.example.badmintonbookingapp.R;
 
-public class UserPaymentFragment extends Fragment {
+public class ManageCheckinFragment extends Fragment {
 
-    private UserPaymentViewModel mViewModel;
+    private ManageCheckinViewModel mViewModel;
 
-    public static UserPaymentFragment newInstance() {
-        return new UserPaymentFragment();
+    public static ManageCheckinFragment newInstance() {
+        return new ManageCheckinFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_payment, container, false);
+        return inflater.inflate(R.layout.fragment_manage_checkin, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(UserPaymentViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(ManageCheckinViewModel.class);
         // TODO: Use the ViewModel
     }
 

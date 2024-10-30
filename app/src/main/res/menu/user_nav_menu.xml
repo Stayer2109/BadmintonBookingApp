@@ -14,4 +14,9 @@
         android:id="@+id/user_navigation_order"
         android:icon="@drawable/order_icon"
         android:title="Order" />
+
+    <item
+        android:id="@+id/user_navigation_my_account"
+        android:icon="@drawable/account_icon"
+        android:title="My Account" />
 </menu>

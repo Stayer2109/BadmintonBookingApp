@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.ui.user_payment;
+package com.example.badmintonbookingapp.ui.staff.user_payment;
 
 import androidx.lifecycle.ViewModel;
 

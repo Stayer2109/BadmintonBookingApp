@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.ui.manage_checkin;
+package com.example.badmintonbookingapp.ui.user.order;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import com.example.badmintonbookingapp.R;
 
-public class ManageCheckinFragment extends Fragment {
+public class OrderFragment extends Fragment {
 
-    private ManageCheckinViewModel mViewModel;
+    private OrderViewModel mViewModel;
 
-    public static ManageCheckinFragment newInstance() {
-        return new ManageCheckinFragment();
+    public static OrderFragment newInstance() {
+        return new OrderFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_manage_checkin, container, false);
+        return inflater.inflate(R.layout.fragment_order, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ManageCheckinViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(OrderViewModel.class);
         // TODO: Use the ViewModel
     }
 

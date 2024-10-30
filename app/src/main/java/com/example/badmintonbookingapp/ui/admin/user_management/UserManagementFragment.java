@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.ui.user_booking;
+package com.example.badmintonbookingapp.ui.admin.user_management;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import com.example.badmintonbookingapp.R;
 
-public class UserBookingFragment extends Fragment {
+public class UserManagementFragment extends Fragment {
 
-    private UserBookingViewModel mViewModel;
+    private UserManagementViewModel mViewModel;
 
-    public static UserBookingFragment newInstance() {
-        return new UserBookingFragment();
+    public static UserManagementFragment newInstance() {
+        return new UserManagementFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_booking, container, false);
+        return inflater.inflate(R.layout.fragment_user_management, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(UserBookingViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(UserManagementViewModel.class);
         // TODO: Use the ViewModel
     }
 
