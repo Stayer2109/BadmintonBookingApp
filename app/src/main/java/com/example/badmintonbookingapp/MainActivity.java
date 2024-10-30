@@ -12,14 +12,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.badmintonbookingapp.databinding.CourOwnerMainLayoutBinding;
 import com.example.badmintonbookingapp.databinding.StaffMainLayoutBinding;
 import com.example.badmintonbookingapp.databinding.UserMainLayoutBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private String userRole;
-    private StaffMainLayoutBinding staffBinding;  // Use UserMainLayoutBinding for user_main_layout
-    private UserMainLayoutBinding userBinding;  // Use StaffMainLayoutBinding for staff_main_layout
+    private StaffMainLayoutBinding staffBinding;
+    private UserMainLayoutBinding userBinding;
+    private CourOwnerMainLayoutBinding courOwnerBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         // Set the layout based on user role
         setLayoutBasedOnRole();
 
-        // Set up navigation components if layout is user_main_layout
+        // Set up navigation components if layout is user_main_layout or cour_owner_main_layout
         setupNavigation();
     }
 
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private void setLayoutBasedOnRole() {
         if ("User".equals(userRole)) {
             userBinding = UserMainLayoutBinding.inflate(getLayoutInflater());
-            setContentView(userBinding.getRoot());  // Load user-specific layout (user_main_layout)
+            setContentView(userBinding.getRoot());
 
             // Adjust padding to fit system bars for immersive experience
             ViewCompat.setOnApplyWindowInsetsListener(userBinding.getRoot(), (v, insets) -> {
@@ -52,49 +54,50 @@ public class MainActivity extends AppCompatActivity {
             });
         } else if ("Staff".equals(userRole)) {
             staffBinding = StaffMainLayoutBinding.inflate(getLayoutInflater());
-            setContentView(staffBinding.getRoot());  // Load user-specific layout (user_main_layout)
+            setContentView(staffBinding.getRoot());
 
-            // Adjust padding to fit system bars for immersive experience
             ViewCompat.setOnApplyWindowInsetsListener(staffBinding.getRoot(), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
+        } else if ("CourOwner".equals(userRole)) {
+            courOwnerBinding = CourOwnerMainLayoutBinding.inflate(getLayoutInflater());
+            setContentView(courOwnerBinding.getRoot());
+
+            ViewCompat.setOnApplyWindowInsetsListener(courOwnerBinding.getRoot(), (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
         } else {
-            setContentView(R.layout.activity_main);  // Default layout for unknown roles
+            setContentView(R.layout.activity_main);
         }
     }
 
     // Function to set up navigation components
     private void setupNavigation() {
-        if (userBinding != null && "User".equals(userRole)) {  // Proceed if layout is user_main_layout
-            // Set up AppBarConfiguration with top-level destinations
+        if (userBinding != null && "User".equals(userRole)) {
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.user_navigation_home, R.id.user_navigation_booking, R.id.user_navigation_order)
                     .build();
-
-            // Set up NavController with the NavHostFragment from user_main_layout
             NavController navController = Navigation.findNavController(this, R.id.user_nav_host_fragment_activity_main);
-
-            // Link ActionBar with NavController
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-            // Link BottomNavigationView with NavController
             NavigationUI.setupWithNavController(userBinding.userNavView, navController);
         } else if (staffBinding != null && "Staff".equals(userRole)) {
-            // Set up AppBarConfiguration with top-level destinations
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.staff_navigation_manage_checkin, R.id.staff_navigation_user_payment, R.id.staff_navigation_manage_checkin)
                     .build();
-
-            // Set up NavController with the NavHostFragment from user_main_layout
             NavController navController = Navigation.findNavController(this, R.id.staff_nav_host_fragment_activity_main);
-
-            // Link ActionBar with NavController
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-            // Link BottomNavigationView with NavController
             NavigationUI.setupWithNavController(staffBinding.staffNavView, navController);
+        } else if (courOwnerBinding != null && "CourOwner".equals(userRole)) {
+            AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.user_navigation_home, R.id.cour_owner_navigation_staff_management, R.id.cour_owner_navigation_yard_management)
+                    .build();
+            NavController navController = Navigation.findNavController(this, R.id.cour_owner_nav_host_fragment_activity_main);
+            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+            NavigationUI.setupWithNavController(courOwnerBinding.courOwnerNavView, navController);
         }
     }
 
@@ -102,19 +105,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         NavController navController;
         if ("User".equals(userRole) && userBinding != null) {
-            // Handle Up navigation for user layout
             navController = Navigation.findNavController(this, R.id.user_nav_host_fragment_activity_main);
         } else if ("Staff".equals(userRole) && staffBinding != null) {
-            // Handle Up navigation for staff layout
             navController = Navigation.findNavController(this, R.id.staff_nav_host_fragment_activity_main);
+        } else if ("CourOwner".equals(userRole) && courOwnerBinding != null) {
+            navController = Navigation.findNavController(this, R.id.cour_owner_nav_host_fragment_activity_main);
         } else {
             return super.onSupportNavigateUp();
         }
         return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
-    // Example method to retrieve user role; replace with actual retrieval logic
     private String getUserRole() {
-        return "Staff";  // Temporary hardcoded value for demonstration
+        return "CourOwner";  // Temporary hardcoded value for demonstration; replace with actual retrieval logic
     }
 }
