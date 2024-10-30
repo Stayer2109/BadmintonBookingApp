@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/court_owner_navigation_home"
+        android:icon="@drawable/house_icon"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/court_owner_navigation_court_management"
+        android:icon="@drawable/court_icon"
+        android:title="Court Management" />
+
+    <item
+        android:id="@+id/court_owner_navigation_staff_management"
+        android:icon="@drawable/account_icon"
+        android:title="Staff Management" />
+</menu>

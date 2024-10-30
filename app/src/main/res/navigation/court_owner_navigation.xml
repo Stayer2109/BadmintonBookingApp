@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/court_owner_navigation"
+    app:startDestination="@id/court_owner_navigation_home">
+
+    <fragment
+        android:id="@+id/court_owner_navigation_home"
+        android:name="com.example.badmintonbookingapp.ui.court_owner.home.CourtOwnerHomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_court_owner_home" />
+    
+    <fragment
+        android:id="@+id/court_owner_navigation_court_management"
+        android:name="com.example.badmintonbookingapp.ui.court_owner.court_owner_court.CourtManagementFragment"
+        android:label="Court Management"
+        tools:layout="@layout/fragment_court_management" />
+
+    <fragment
+        android:id="@+id/court_owner_navigation_staff_management"
+        android:name="com.example.badmintonbookingapp.ui.court_owner.court_owner_staff.StaffManagementFragment"
+        android:label="Staff Management"
+        tools:layout="@layout/fragment_staff_management" />
+</navigation>

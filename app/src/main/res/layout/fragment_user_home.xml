@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.cour_owner_staff.StaffManaFragment">
+    tools:context=".ui.user.home.UserHomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="this is staff manage" />
+        android:text="This is home fragment" />
 
 </FrameLayout>

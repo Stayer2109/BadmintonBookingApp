@@ -1,39 +1,38 @@
-package com.example.badmintonbookingapp.ui.cour_owner_yard;
+package com.example.badmintonbookingapp.ui.court_owner.home;
+
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.badmintonbookingapp.R;
-import com.example.badmintonbookingapp.ui.cour_owner_staff.StaffManaFragment;
-import com.example.badmintonbookingapp.ui.cour_owner_staff.StaffManaViewModel;
 
+public class CourtOwnerHomeFragment extends Fragment {
 
-public class YardManaFragment extends Fragment {
+    private CourtOwnerHomeViewModel mViewModel;
 
-    private YardManaViewModel mViewModel;
-
-    public static YardManaFragment newInstance() {
-        return new YardManaFragment();
+    public static CourtOwnerHomeFragment newInstance() {
+        return new CourtOwnerHomeFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_yard_mana, container, false);
+        return inflater.inflate(R.layout.fragment_court_owner_home, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(YardManaViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(CourtOwnerHomeViewModel.class);
         // TODO: Use the ViewModel
     }
+
 }
