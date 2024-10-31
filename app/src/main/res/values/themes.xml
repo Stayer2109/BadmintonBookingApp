@@ -2,8 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.BadmintonBookingApp" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<!--        <item name="colorPrimary">@color/primary_blue_400</item>-->
+<!--        <item name="colorPrimaryDark">@color/primary_blue_400</item>-->
+<!--        <item name="colorAccent">@color/primary_orange_500</item>-->
     </style>
 
-    <style name="Theme.BadmintonBookingApp" parent="Base.Theme.BadmintonBookingApp" />
+    <style name="Theme.BadmintonBookingApp" parent="Base.Theme.BadmintonBookingApp"/>
+
 </resources>

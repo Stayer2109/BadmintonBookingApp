@@ -5,7 +5,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
-    private static String baseUrl = "http://10.0.2.2:8080/";
+    // quang docker, check both ips in local and docker(linux), then config it in @xml/network_security_config
+    private static String baseUrl = "http://172.30.60.233:8080/";
     private static Retrofit retrofit;
 
     public static Retrofit getClient() {
@@ -14,5 +15,9 @@ public class APIClient {
                     .addConverterFactory(GsonConverterFactory.create()).build();
         }
         return retrofit;
+    }
+
+    public static <T> T getService(Class<T> serviceClass) {
+        return getClient().create(serviceClass);
     }
 }

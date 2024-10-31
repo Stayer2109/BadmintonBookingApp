@@ -16,6 +16,7 @@ import com.example.badmintonbookingapp.databinding.AdminMainLayoutBinding;
 import com.example.badmintonbookingapp.databinding.CourtOwnerMainLayoutBinding;
 import com.example.badmintonbookingapp.databinding.StaffMainLayoutBinding;
 import com.example.badmintonbookingapp.databinding.UserMainLayoutBinding;
+import com.example.badmintonbookingapp.utils.TokenManager;
 
 public class MainActivity extends AppCompatActivity {
     private String userRole;
@@ -23,10 +24,12 @@ public class MainActivity extends AppCompatActivity {
     private UserMainLayoutBinding userBinding;
     private CourtOwnerMainLayoutBinding courtOwnerBinding;
     private AdminMainLayoutBinding adminBinding;
+    private TokenManager tokenManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tokenManager = TokenManager.getInstance(this);
 
         // Enable edge-to-edge immersive layout
         EdgeToEdge.enable(this);
@@ -149,6 +152,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getUserRole() {
-        return "Admin";
+        return tokenManager.getRole();
     }
 }

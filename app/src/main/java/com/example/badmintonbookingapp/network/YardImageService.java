@@ -1,4 +1,4 @@
-package com.example.badmintonbookingapp.service;
+package com.example.badmintonbookingapp.network;
 
 import com.example.badmintonbookingapp.dto.YardImagesDTO;
 
