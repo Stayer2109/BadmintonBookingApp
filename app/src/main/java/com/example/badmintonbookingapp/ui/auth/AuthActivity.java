@@ -100,7 +100,6 @@ public class AuthActivity extends AppCompatActivity {
                 Toast.makeText(AuthActivity.this, "User: " + user.getUsername(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     // Set up LiveData observers for sign-in response and error handling

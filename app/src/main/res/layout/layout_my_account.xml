@@ -1,0 +1,94 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/loginCard"
+    android:id="@+id/cvMyAccount"
+    app:cardCornerRadius="@dimen/loginCardRadius"
+    android:elevation="5dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/loginViewsMargin"
+    android:layout_marginBottom="@dimen/loginViewsMargin"
+    android:background="@color/whiteCardColor">
+
+    <LinearLayout
+        style="@style/linearParent"
+        android:layout_gravity="center"
+        android:padding="@dimen/loginViewsMargin">
+
+        <Button
+            android:id="@+id/btnLogout"
+            style="@style/loginButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            app:backgroundTint="@null"
+            android:text="Logout" />
+
+        <LinearLayout
+            style="@style/viewParent"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:paddingHorizontal="40dp"
+            >
+
+            <LinearLayout
+                style="@style/viewParent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    style="@style/textviewTitle"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Name" />
+                <TextView
+                    style="@style/textviewTitle"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Username" />
+                <TextView
+                    style="@style/textviewTitle"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Email" />
+                <TextView
+                    style="@style/textviewTitle"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Gender" />
+                <TextView
+                    style="@style/textviewTitle"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Dob" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/viewParent"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/loginViewsMargin"
+                >
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Tran Dinh Minh Quang" />
+                <TextView
+                    android:id="@+id/tvUsername"
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Username" />
+                <TextView
+                    android:id="@+id/tvEmail"
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Email" />
+                <TextView
+                    android:id="@+id/tvGender"
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Gender" />
+                <TextView
+                    android:id="@+id/tvDob"
+                    style="@style/parent"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:text="Dob" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
