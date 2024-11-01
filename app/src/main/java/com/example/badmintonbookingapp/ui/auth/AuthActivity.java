@@ -128,7 +128,7 @@ public class AuthActivity extends AppCompatActivity {
     private void checkUser() {
         if (tokenManager.getAccessToken() != null) {
             // Navigate to main activity
-            Toast.makeText(this, "Already signed in!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Already signed in!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
