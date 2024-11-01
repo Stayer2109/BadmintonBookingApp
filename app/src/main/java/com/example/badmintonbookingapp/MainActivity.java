@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Function to set layout based on user role
     private void setLayoutBasedOnRole() {
-        if ("User".equals(userRole)) {
+        if ("ROLE_USER".equals(userRole)) {
             userBinding = UserMainLayoutBinding.inflate(getLayoutInflater());
             setContentView(userBinding.getRoot());
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
-        } else if ("Staff".equals(userRole)) {
+        } else if ("ROLE_STAFF".equals(userRole)) {
             staffBinding = StaffMainLayoutBinding.inflate(getLayoutInflater());
             setContentView(staffBinding.getRoot());
 
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
-        } else if ("CourtOwner".equals(userRole)) {
+        } else if ("ROLE_OWNER".equals(userRole)) {
             courtOwnerBinding = CourtOwnerMainLayoutBinding.inflate(getLayoutInflater());
             setContentView(courtOwnerBinding.getRoot());
 
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
-        } else if ("Admin".equals(userRole)) {
+        } else if ("ROLE_ADMIN".equals(userRole)) {
             adminBinding = AdminMainLayoutBinding.inflate(getLayoutInflater());
             setContentView(adminBinding.getRoot());  // Load user-specific layout (user_main_layout)
 
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Function to set up navigation components
     private void setupNavigation() {
-        if (userBinding != null && "User".equals(userRole)) {
+        if (userBinding != null && "ROLE_USER".equals(userRole)) {
             // Set up AppBarConfiguration with top-level destinations
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.user_navigation_home)
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
             NavigationUI.setupWithNavController(userBinding.userNavView, navController);
 
-        } else if (staffBinding != null && "Staff".equals(userRole)) {
+        } else if (staffBinding != null && "ROLE_STAFF".equals(userRole)) {
             // Set up AppBarConfiguration with top-level destinations
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.staff_navigation_home)
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
             NavigationUI.setupWithNavController(staffBinding.staffNavView, navController);
 
-        } else if (adminBinding != null && "Admin".equals(userRole)) {
+        } else if (adminBinding != null && "ROLE_ADMIN".equals(userRole)) {
             // Set up AppBarConfiguration with top-level destinations
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.admin_navigation_user_management)
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
             NavigationUI.setupWithNavController(adminBinding.adminNavView, navController);
 
-        } else if (courtOwnerBinding != null && "CourtOwner".equals(userRole)) {
+        } else if (courtOwnerBinding != null && "ROLE_OWNER".equals(userRole)) {
             // Set up AppBarConfiguration with top-level destinations
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                     R.id.court_owner_navigation_home)
@@ -137,13 +137,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController;
-        if ("User".equals(userRole) && userBinding != null) {
+        if ("ROLE_USER".equals(userRole) && userBinding != null) {
             navController = Navigation.findNavController(this, R.id.user_nav_host_fragment_activity_main);
-        } else if ("Staff".equals(userRole) && staffBinding != null) {
+        } else if ("ROLE_STAFF".equals(userRole) && staffBinding != null) {
             navController = Navigation.findNavController(this, R.id.staff_nav_host_fragment_activity_main);
-        } else if ("CourtOwner".equals(userRole) && courtOwnerBinding != null) {
+        } else if ("ROLE_OWNER".equals(userRole) && courtOwnerBinding != null) {
             navController = Navigation.findNavController(this, R.id.court_owner_nav_host_fragment_activity_main);
-        } else if ("Admin".equals(userRole) && adminBinding != null) {
+        } else if ("ROLE_ADMIN".equals(userRole) && adminBinding != null) {
             navController = Navigation.findNavController(this, R.id.admin_nav_host_fragment_activity_main);
         } else {
             return super.onSupportNavigateUp();
@@ -153,5 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String getUserRole() {
         return tokenManager.getRole();
+//        return "ROLE_USER";
     }
 }
