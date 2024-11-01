@@ -1,0 +1,44 @@
+<!-- res/layout/item_court_view.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_marginBottom="16dp">
+
+    <TextView
+        android:id="@+id/zone_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Court Name"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/yard_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Address"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/yard_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/yard_open_close_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Opening Hours"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/yard_telephones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contacts"
+        android:textSize="14sp" />
+</LinearLayout>
