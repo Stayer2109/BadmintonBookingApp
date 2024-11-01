@@ -1,6 +1,10 @@
 package com.example.badmintonbookingapp.utils;// utils/TokenManager.java
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class TokenManager {
     private static final String PREF_NAME = "badminton_app_prefs";
@@ -36,7 +40,24 @@ public class TokenManager {
     }
 
     public String getRole() {
-        return prefs.getString("role", null);
+        String accessToken = getAccessToken();
+        if (accessToken == null) return null;
+
+        try {
+            // Split the JWT into its parts and decode the payload
+            String[] parts = accessToken.split("\\.");
+            if (parts.length < 2) return null;
+
+            // Decode payload (second part of JWT) from Base64
+            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+            JSONObject jsonObject = new JSONObject(payload);
+
+            // Extract "role" field from JSON payload
+            return jsonObject.optString("role", null);
+        } catch (JSONException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public String getRefreshToken() {

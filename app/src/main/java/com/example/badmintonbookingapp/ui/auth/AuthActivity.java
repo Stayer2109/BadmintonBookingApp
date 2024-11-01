@@ -90,6 +90,7 @@ public class AuthActivity extends AppCompatActivity {
                 tokenManager.saveTokens(response.getToken(), response.getRefreshToken());
                 Toast.makeText(AuthActivity.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
                 authViewModel.fetchUserInfo();
+                checkUser();
             }
         });
 
