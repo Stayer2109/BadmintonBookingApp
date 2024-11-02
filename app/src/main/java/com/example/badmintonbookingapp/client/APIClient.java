@@ -2,7 +2,12 @@ package com.example.badmintonbookingapp.client;
 
 import com.example.badmintonbookingapp.network.AuthInterceptor;
 import com.example.badmintonbookingapp.repository.AuthRepository;
+import com.example.badmintonbookingapp.utils.LocalTimeDeserializer;
 import com.example.badmintonbookingapp.utils.TokenManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.time.LocalTime;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -23,6 +28,10 @@ public class APIClient {
 
     public static Retrofit getClient(TokenManager tokenManager, AuthRepository authRepository) {
         if (retrofit == null) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer()) // Register the LocalTime deserializer
+                    .create();
+
             // Add AuthInterceptor to OkHttpClient
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(new AuthInterceptor(tokenManager, authRepository))  // AuthInterceptor should be added here
@@ -31,7 +40,7 @@ public class APIClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retrofit;

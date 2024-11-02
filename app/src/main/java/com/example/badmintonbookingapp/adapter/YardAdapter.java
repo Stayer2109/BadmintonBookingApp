@@ -1,5 +1,7 @@
 package com.example.badmintonbookingapp.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +13,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.badmintonbookingapp.R;
 import com.example.badmintonbookingapp.dto.TelephonesDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
+import com.example.badmintonbookingapp.ui.not_fragment.court_detail.YardDetailActivity;
 
 import java.util.List;
 
 public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder> {
     private List<YardResponseDTO> yards;
+    private Context context;
 
-    public YardAdapter(List<YardResponseDTO> yards) {
+    public YardAdapter(Context context, List<YardResponseDTO> yards) {
+        this.context = context;
         this.yards = yards;
     }
 
     public void setYards(List<YardResponseDTO> yards) {
         this.yards = yards;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -38,21 +44,30 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
         YardResponseDTO yard = yards.get(position);
 
         holder.yardName.setText(yard.getName());
-        holder.yardAddress.append(yard.getAddress());
-        holder.yardStatus.append(yard.getStatus() ? "Available" : "Unavailable");
+        holder.yardAddress.setText("Address: " + yard.getAddress());
+        holder.yardStatus.setText("Status: " + (yard.getStatus() ? "Available" : "Unavailable"));
         holder.yardOpenCloseTime.setText(String.format("Open: %s - Close: %s", yard.getOpenTime(), yard.getCloseTime()));
-        holder.yardDescription.append(yard.getDescription());
+        holder.yardDescription.setText("Description: " + yard.getDescription());
 
-        // Display telephones with id and yardId if needed
+        // Display telephones
         StringBuilder telephones = new StringBuilder();
-        if (yard.getTelephones() != null) {
+        if (yard.getTelephones() != null && !yard.getTelephones().isEmpty()) {
             for (int i = 0; i < yard.getTelephones().size(); i++) {
                 TelephonesDTO telephone = yard.getTelephones().get(i);
-                telephones.append("\t\t Number: ").append(telephone.getTelephone());
+                telephones.append("\n\t\t Number: ").append(telephone.getTelephone());
                 if (i < yard.getTelephones().size() - 1) telephones.append("\n");
             }
+            holder.yardTelephones.setText("Contacts: " + telephones.toString());
+        } else {
+            holder.yardTelephones.setText("Contacts: None");
         }
-        holder.yardTelephones.setText("Contacts:\n" + telephones.toString());
+
+        // Set an OnClickListener to start YardDetailActivity with the yard ID
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, YardDetailActivity.class);
+            intent.putExtra("yard_id", yard.getId()); // Passing the yard ID
+            context.startActivity(intent);
+        });
     }
 
     @Override
