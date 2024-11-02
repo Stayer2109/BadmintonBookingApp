@@ -3,6 +3,7 @@ package com.example.badmintonbookingapp.ui.user.home;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -48,7 +49,7 @@ public class UserHomeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewYards);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        yardAdapter = new YardAdapter(null);
+        yardAdapter = new YardAdapter(getContext(), null);
         recyclerView.setAdapter(yardAdapter);
 
         homeViewModel.getAllYards().observe(getViewLifecycleOwner(), new Observer<List<YardResponseDTO>>() {

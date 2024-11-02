@@ -2,6 +2,7 @@ package com.example.badmintonbookingapp.network;
 
 import com.example.badmintonbookingapp.dto.request.YardRequestDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
+import com.example.badmintonbookingapp.dto.response.wrapper.YardDetailResponseWrapper;
 import com.example.badmintonbookingapp.dto.response.wrapper.YardResponseWrapper;
 
 import java.util.List;

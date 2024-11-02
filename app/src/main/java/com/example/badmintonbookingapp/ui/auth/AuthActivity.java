@@ -144,7 +144,7 @@ public class AuthActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         role = new AtomicInteger(0);
         if (rbUser.isChecked()) {
-            role.set(1);
+            role.set(2);
         } else if (rbCourtOwner.isChecked()) {
             role.set(4);
         } else {

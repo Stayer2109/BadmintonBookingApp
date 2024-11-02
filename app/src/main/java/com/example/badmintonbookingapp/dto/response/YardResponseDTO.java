@@ -2,6 +2,7 @@ package com.example.badmintonbookingapp.dto.response;
 
 import com.example.badmintonbookingapp.dto.TelephonesDTO;
 import com.example.badmintonbookingapp.dto.YardImagesDTO;
+import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,21 +10,52 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class YardResponseDTO {
+    @SerializedName("id")
     private Integer id;
+
+    @SerializedName("name")
     private String name;
+
+    @SerializedName("address")
     private String address;
+
+    @SerializedName("province_id")
     private Integer provinceId;
+
+    @SerializedName("description")
     private String description;
+
+    @SerializedName("status")
     private Boolean status;
-    private LocalTime openTime;  // Time-only field
-    private LocalTime closeTime; // Time-only field
-    private LocalDate createDate; // Date-only field, or change to LocalDateTime if it includes time
-    private LocalDate updateDate; // Date-only field, or change to LocalDateTime if it includes time
+
+    @SerializedName("open_time")
+    private LocalTime openTime;  // Maps to open_time in JSON
+
+    @SerializedName("close_time")
+    private LocalTime closeTime; // Maps to close_time in JSON
+
+    @SerializedName("create_date")
+    private LocalDate createDate; // Maps to create_date in JSON
+
+    @SerializedName("update_date")
+    private LocalDate updateDate; // Maps to update_date in JSON
+
+    @SerializedName("create_by")
     private Integer createBy;
+
+    @SerializedName("update_by")
     private Integer updateBy;
+
+    @SerializedName("host_id")
     private Integer hostId;
+
+    @SerializedName("telephones")
     private List<TelephonesDTO> telephones;
+
+    @SerializedName("slots")
     private List<SlotResponseDTO> slots;
+
+    @SerializedName("images")
     private List<YardImagesDTO> images;
 
     public YardResponseDTO(Integer id, String name, String address, Integer provinceId, String description, Boolean status, LocalTime openTime, LocalTime closeTime, LocalDate createDate, LocalDate updateDate, Integer createBy, Integer updateBy, Integer hostId, List<TelephonesDTO> telephones, List<SlotResponseDTO> slots, List<YardImagesDTO> images) {
