@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.badmintonbookingapp.MainActivity;
 import com.example.badmintonbookingapp.R;
+import com.example.badmintonbookingapp.dto.request.SignUpRequest;
 import com.example.badmintonbookingapp.dto.response.JwtAuthenticationResponse;
 import com.example.badmintonbookingapp.utils.TokenManager;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AuthActivity extends AppCompatActivity {
     private TokenManager tokenManager;
@@ -24,7 +29,9 @@ public class AuthActivity extends AppCompatActivity {
     private CardView cardLogin, cardRegister;
     private TextView tvLogin, tvRegister;
     private Button btnLogin, btnRegister;
-    private EditText etUsername, etEmail, etPassword, etName, etPhone;
+    private EditText etUsername, etEmail, etPassword, etFirstName, etLastName;
+    private RadioButton rbUser, rbCourtOwner;
+    private AtomicInteger role;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +67,25 @@ public class AuthActivity extends AppCompatActivity {
         cardLogin.setVisibility(View.GONE);
         cardRegister.setVisibility(View.VISIBLE);
         tvLogin = findViewById(R.id.tvLogin);
-        etName = findViewById(R.id.etName);
-        etEmail = findViewById(R.id.etUsername);
-        etPhone = findViewById(R.id.etPhone);
-        etPassword = findViewById(R.id.etPassword);
+        etFirstName = findViewById(R.id.etFirstName);
+        etLastName = findViewById(R.id.etLastName);
+        etUsername = findViewById(R.id.etRegisterUsername);
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etRegisterPassword);
         btnRegister = findViewById(R.id.btnRegister);
+        rbUser = findViewById(R.id.rbUser);
+        rbCourtOwner = findViewById(R.id.rbCourtOwner);
         tvLogin.setOnClickListener(v -> LoginMapping());
-        //btnRegister.setOnClickListener(v -> Register());
+        btnRegister.setOnClickListener(v -> Register());
+        rbUser.setOnClickListener(v -> {
+            rbUser.setChecked(true);
+            rbCourtOwner.setChecked(false);
+        });
+
+        rbCourtOwner.setOnClickListener(v -> {
+            rbUser.setChecked(false);
+            rbCourtOwner.setChecked(true);
+        });
     }
 
     // Method to handle sign-in button click
@@ -84,33 +103,16 @@ public class AuthActivity extends AppCompatActivity {
         authViewModel.signIn(username, password);
 
         // Save token to shared preferences
-        tokenManager = TokenManager.getInstance(this);
-        authViewModel.getSignInResponse().observe(this, response -> {
-            if (response != null) {
-                tokenManager.saveTokens(response.getToken(), response.getRefreshToken());
-                Toast.makeText(AuthActivity.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
-                authViewModel.fetchUserInfo();
-                checkUser();
-            }
-        });
-
-        authViewModel.getUserInfo().observe(this, user -> {
-            if (user != null) {
-                // Use user data as needed
-                Toast.makeText(AuthActivity.this, "User: " + user.getUsername(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        setupSignInObservers();
     }
 
     // Set up LiveData observers for sign-in response and error handling
-    private void setupObservers() {
+    private void setupSignInObservers() {
         authViewModel.getSignInResponse().observe(this, new Observer<JwtAuthenticationResponse>() {
             @Override
             public void onChanged(JwtAuthenticationResponse response) {
                 if (response != null) {
-                    // Handle successful sign-in (e.g., navigate to main activity or save token)
-                    Toast.makeText(AuthActivity.this, "Sign-in Successful! Token: "
-                            + response.getToken(), Toast.LENGTH_SHORT).show();
+                    checkUser();
                 }
             }
         });
@@ -127,9 +129,37 @@ public class AuthActivity extends AppCompatActivity {
     private void checkUser() {
         if (tokenManager.getAccessToken() != null) {
             // Navigate to main activity
-//            Toast.makeText(this, "Already signed in!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sign-in Successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
+    }
+
+    // Method to handle register button click
+    private void Register() {
+        String firstName = etFirstName.getText().toString().trim();
+        String lastName = etLastName.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
+        String username = etUsername.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        role = new AtomicInteger(0);
+        if (rbUser.isChecked()) {
+            role.set(1);
+        } else if (rbCourtOwner.isChecked()) {
+            role.set(4);
+        } else {
+            Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Call ViewModel to initiate register process
+        SignUpRequest signUpRequest = new SignUpRequest(firstName, lastName, email, password, username, role.get());
+        authViewModel.register(signUpRequest);
+        setupSignInObservers();
     }
 }

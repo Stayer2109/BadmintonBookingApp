@@ -22,12 +22,11 @@
         android:name="com.example.badmintonbookingapp.ui.user.order.OrderFragment"
         android:label="Order"
         tools:layout="@layout/fragment_order" />
-
     <fragment
-        android:id="@+id/user_navigation_my_account"
-        android:name="com.example.badmintonbookingapp.ui.user.my_account.UserMyAccountFragment"
+        android:id="@+id/myAccountFragment"
+        android:name="com.example.badmintonbookingapp.ui.my_account.MyAccountFragment"
         android:label="My Account"
-        tools:layout="@layout/fragment_user_my_account" />
+        tools:layout="@layout/fragment_my_account" />
 
 
 </navigation>

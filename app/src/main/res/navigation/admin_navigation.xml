@@ -13,7 +13,7 @@
     <fragment
         android:id="@+id/myAccountFragment"
         android:name="com.example.badmintonbookingapp.ui.my_account.MyAccountFragment"
-        android:label="fragment_my_account"
+        android:label="My Account"
         tools:layout="@layout/fragment_my_account" />
 
 </navigation>

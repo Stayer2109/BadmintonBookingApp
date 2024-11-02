@@ -3,6 +3,8 @@ package com.example.badmintonbookingapp.ui.my_account;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,9 +14,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.badmintonbookingapp.R;
+import com.example.badmintonbookingapp.ui.auth.AuthActivity;
 import com.example.badmintonbookingapp.ui.auth.AuthViewModel;
 
 import java.text.SimpleDateFormat;
@@ -22,7 +26,8 @@ import java.text.SimpleDateFormat;
 public class MyAccountFragment extends Fragment {
     private AuthViewModel authViewModel;
     private CardView cardMyAccount;
-    private TextView tvUsername, tvEmail, tvName, tvPhone, tvGender, tvDob;
+    private TextView tvUsername, tvEmail, tvName, tvGender, tvDob;
+    private Button btnLogout;
 
     public static MyAccountFragment newInstance() {
         return new MyAccountFragment();
@@ -35,35 +40,50 @@ public class MyAccountFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize ViewModel and UI elements
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-        Mapping();
+        Mapping(view);
+        GetAccount();
     }
 
-    private void Mapping () {
-        cardMyAccount = getView().findViewById(R.id.cvMyAccount);
-        tvUsername = getView().findViewById(R.id.tvUsername);
-        tvEmail = getView().findViewById(R.id.tvEmail);
-        tvName = getView().findViewById(R.id.tvName);
-        tvGender = getView().findViewById(R.id.tvGender);
-        tvDob = getView().findViewById(R.id.tvDob);
+    private void Mapping(View view) {
+        cardMyAccount = view.findViewById(R.id.cvMyAccount);
+        tvUsername = view.findViewById(R.id.tvUsername);
+        tvEmail = view.findViewById(R.id.tvEmail);
+        tvName = view.findViewById(R.id.tvName);
+        tvGender = view.findViewById(R.id.tvGender);
+        tvDob = view.findViewById(R.id.tvDob);
+        btnLogout = view.findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(v -> Logout());
     }
 
+    @SuppressLint("SetTextI18n")
     private void GetAccount() {
-        authViewModel.getUserInfo().observe(getViewLifecycleOwner(), userResponseDTO -> {
-            tvUsername.setText(userResponseDTO.getUsername());
-            tvEmail.setText(userResponseDTO.getEmail());
-            tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
+        authViewModel.getAccount();
+        authViewModel.getAccountInfo().observe(getViewLifecycleOwner(), userResponseDTO -> {
+            if (userResponseDTO != null) {
+                tvUsername.setText(userResponseDTO.getUsername());
+                tvEmail.setText(userResponseDTO.getEmail());
+                tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
 
-            // if gender is true then display male, else display female
-            if (userResponseDTO.getGender()) { tvGender.setText("male"); }
-            else { tvGender.setText("female"); }
+                // Set gender
+                tvGender.setText(userResponseDTO.getGender() ? "male" : "female");
 
-            // Convert date to string, format: dd/MM/yyyy
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-            String dob = formatter.format(userResponseDTO.getDob());
-            tvDob.setText(dob);
+                // Format and display date of birth
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String dob = formatter.format(userResponseDTO.getDob());
+                tvDob.setText(dob);
+            }
+
         });
+    }
+
+    private void Logout() {
+        authViewModel.logout();
+        startActivity(new Intent(getActivity(), AuthActivity.class));
+        getActivity().finish();
     }
 }

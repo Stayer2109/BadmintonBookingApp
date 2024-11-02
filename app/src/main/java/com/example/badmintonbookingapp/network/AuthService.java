@@ -1,6 +1,7 @@
 package com.example.badmintonbookingapp.network;
 
 import com.example.badmintonbookingapp.dto.request.SignInRequest;
+import com.example.badmintonbookingapp.dto.request.SignUpRequest;
 import com.example.badmintonbookingapp.dto.response.JwtAuthenticationResponse;
 import com.example.badmintonbookingapp.dto.response.UserResponseDTO;
 
@@ -17,6 +18,12 @@ public interface AuthService {
 
      @POST(requestMapping + "/refresh")
      Call<JwtAuthenticationResponse> refreshToken();
+
+     @POST(requestMapping + "/signup")
+     Call<JwtAuthenticationResponse> signUp(@Body SignUpRequest signUpRequestDTO);
+
+     @POST(requestMapping + "/logout")
+     Call<Void> logOut();
 
      @GET(requestMapping + "/account")
      Call<UserResponseDTO> getAccount();

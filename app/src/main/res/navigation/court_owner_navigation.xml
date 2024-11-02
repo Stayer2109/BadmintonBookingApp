@@ -22,4 +22,9 @@
         android:name="com.example.badmintonbookingapp.ui.court_owner.court_owner_staff.StaffManagementFragment"
         android:label="Staff Management"
         tools:layout="@layout/fragment_staff_management" />
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="com.example.badmintonbookingapp.ui.my_account.MyAccountFragment"
+        android:label="My Account"
+        tools:layout="@layout/fragment_my_account" />
 </navigation>
