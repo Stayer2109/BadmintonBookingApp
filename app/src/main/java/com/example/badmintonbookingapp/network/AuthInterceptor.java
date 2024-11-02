@@ -1,14 +1,10 @@
 package com.example.badmintonbookingapp.network;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.utils.TokenManager;
-
 import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -32,7 +28,6 @@ public class AuthInterceptor implements Interceptor {
             request = request.newBuilder()
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .build();
-            Log.d("AuthInterceptor", "Request Headers: " + request.headers().toString());
         }
 
         Response response = chain.proceed(request);

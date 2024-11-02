@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.1"
+jacksonAnnotations = "2.3.3"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -15,6 +16,7 @@ navigationUi = "2.8.3"
 retrofit = "2.11.0"
 
 [libraries]
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jacksonAnnotations" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

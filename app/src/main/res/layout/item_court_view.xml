@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:layout_marginBottom="16dp">
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/zone_label"
@@ -18,27 +18,39 @@
         android:id="@+id/yard_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Address"
+        android:layout_marginTop="4dp"
+        android:text="Address: "
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/yard_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Status"
+        android:layout_marginTop="4dp"
+        android:text="Status: "
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/yard_open_close_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Opening Hours"
+        android:layout_marginTop="4dp"
+        android:text="Opening Hours: "
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/yard_telephones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contacts"
+        android:layout_marginTop="4dp"
+        android:text="Contacts: "
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/yard_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Description: "
         android:textSize="14sp" />
 </LinearLayout>

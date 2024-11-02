@@ -3,6 +3,8 @@ package com.example.badmintonbookingapp.dto.response;
 import com.example.badmintonbookingapp.dto.TelephonesDTO;
 import com.example.badmintonbookingapp.dto.YardImagesDTO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -13,10 +15,10 @@ public class YardResponseDTO {
     private Integer provinceId;
     private String description;
     private Boolean status;
-    private LocalTime openTime;
-    private LocalTime closeTime;
-    private LocalTime createDate;
-    private LocalTime updateDate;
+    private LocalTime openTime;  // Time-only field
+    private LocalTime closeTime; // Time-only field
+    private LocalDate createDate; // Date-only field, or change to LocalDateTime if it includes time
+    private LocalDate updateDate; // Date-only field, or change to LocalDateTime if it includes time
     private Integer createBy;
     private Integer updateBy;
     private Integer hostId;
@@ -24,7 +26,7 @@ public class YardResponseDTO {
     private List<SlotResponseDTO> slots;
     private List<YardImagesDTO> images;
 
-    public YardResponseDTO(Integer id, String name, String address, Integer provinceId, String description, Boolean status, LocalTime openTime, LocalTime closeTime, LocalTime createDate, LocalTime updateDate, Integer createBy, Integer updateBy, Integer hostId, List<TelephonesDTO> telephones, List<SlotResponseDTO> slots, List<YardImagesDTO> images) {
+    public YardResponseDTO(Integer id, String name, String address, Integer provinceId, String description, Boolean status, LocalTime openTime, LocalTime closeTime, LocalDate createDate, LocalDate updateDate, Integer createBy, Integer updateBy, Integer hostId, List<TelephonesDTO> telephones, List<SlotResponseDTO> slots, List<YardImagesDTO> images) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -107,19 +109,19 @@ public class YardResponseDTO {
         this.closeTime = closeTime;
     }
 
-    public LocalTime getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalTime createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 
-    public LocalTime getUpdateDate() {
+    public LocalDate getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(LocalTime updateDate) {
+    public void setUpdateDate(LocalDate updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -169,5 +171,27 @@ public class YardResponseDTO {
 
     public void setImages(List<YardImagesDTO> images) {
         this.images = images;
+    }
+
+    @Override
+    public String toString() {
+        return "YardResponseDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", provinceId=" + provinceId +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", openTime=" + openTime +
+                ", closeTime=" + closeTime +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                ", createBy=" + createBy +
+                ", updateBy=" + updateBy +
+                ", hostId=" + hostId +
+                ", telephones=" + telephones +
+                ", slots=" + slots +
+                ", images=" + images +
+                '}';
     }
 }
