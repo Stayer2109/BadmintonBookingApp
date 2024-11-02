@@ -17,8 +17,9 @@ public class AuthRepository {
     private TokenManager tokenManager;
 
     public AuthRepository(TokenManager tokenManager) {
-        authService = APIClient.getService(AuthService.class);
+        // Pass both TokenManager and AuthRepository to APIClient.getService
         this.tokenManager = tokenManager;
+        authService = APIClient.getService(AuthService.class, tokenManager, this);
     }
 
     public void signIn(String username, String password, final ApiCallback<JwtAuthenticationResponse> callback) {

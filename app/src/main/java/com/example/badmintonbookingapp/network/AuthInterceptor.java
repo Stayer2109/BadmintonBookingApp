@@ -1,5 +1,9 @@
 package com.example.badmintonbookingapp.network;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
@@ -18,6 +22,7 @@ public class AuthInterceptor implements Interceptor {
         this.authRepository = authRepository;
     }
 
+    @NonNull
     @Override
     public Response intercept(Chain chain) throws IOException {
         String accessToken = tokenManager.getAccessToken();
@@ -27,6 +32,8 @@ public class AuthInterceptor implements Interceptor {
             request = request.newBuilder()
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .build();
+
+            Log.d("REQUEST", "Request: " + request);
         }
 
         Response response = chain.proceed(request);
@@ -44,6 +51,8 @@ public class AuthInterceptor implements Interceptor {
                 response.close();
                 return chain.proceed(newRequest);
             }
+        } else if (response.code() == 403) {
+            Log.e("AuthInterceptor", "Access forbidden: " + response);
         }
         return response;
     }
