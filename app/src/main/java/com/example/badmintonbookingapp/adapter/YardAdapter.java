@@ -38,18 +38,17 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
         YardResponseDTO yard = yards.get(position);
 
         holder.yardName.setText(yard.getName());
-        holder.yardAddress.setText(yard.getAddress());
-        holder.yardStatus.setText(yard.getStatus() ? "Available" : "Unavailable");
-        holder.yardOpenCloseTime.setText("Open: " + yard.getOpenTime() + " - Close: " + yard.getCloseTime());
+        holder.yardAddress.append(yard.getAddress());
+        holder.yardStatus.append(yard.getStatus() ? "Available" : "Unavailable");
+        holder.yardOpenCloseTime.setText(String.format("Open: %s - Close: %s", yard.getOpenTime(), yard.getCloseTime()));
+        holder.yardDescription.append(yard.getDescription());
 
         // Display telephones with id and yardId if needed
         StringBuilder telephones = new StringBuilder();
         if (yard.getTelephones() != null) {
             for (int i = 0; i < yard.getTelephones().size(); i++) {
                 TelephonesDTO telephone = yard.getTelephones().get(i);
-                telephones.append("ID: ").append(telephone.getId())
-                        .append(", Yard ID: ").append(telephone.getYardId())
-                        .append(", Number: ").append(telephone.getTelephone());
+                telephones.append("\t\t Number: ").append(telephone.getTelephone());
                 if (i < yard.getTelephones().size() - 1) telephones.append("\n");
             }
         }
@@ -67,6 +66,7 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
         TextView yardStatus;
         TextView yardOpenCloseTime;
         TextView yardTelephones;
+        TextView yardDescription;
 
         public YardViewHolder(View itemView) {
             super(itemView);
@@ -75,6 +75,7 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
             yardStatus = itemView.findViewById(R.id.yard_status);
             yardOpenCloseTime = itemView.findViewById(R.id.yard_open_close_time);
             yardTelephones = itemView.findViewById(R.id.yard_telephones);
+            yardDescription = itemView.findViewById(R.id.yard_desc);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.badmintonbookingapp.network;
 
 import com.example.badmintonbookingapp.dto.request.YardRequestDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
+import com.example.badmintonbookingapp.dto.response.wrapper.YardResponseWrapper;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface YardService {
     Call<YardResponseDTO> getYardById(@Path("id") Integer id);
 
     @GET("yards")
-    Call<List<YardResponseDTO>> getAllYards(@Query("pageNumber") int pageNumber);
+    Call<YardResponseWrapper> getAllYards(@Query("page") int page);
 
     @GET("yards/active")
     Call<List<YardResponseDTO>> getAllActiveYards(@Query("pageNumber") int pageNumber);
