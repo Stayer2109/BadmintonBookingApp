@@ -15,4 +15,9 @@
         android:id="@+id/court_owner_navigation_staff_management"
         android:icon="@drawable/account_icon"
         android:title="Staff Management" />
+
+    <item
+        android:id="@+id/myAccountFragment"
+        android:icon="@drawable/account_icon"
+        android:title="My Account" />
 </menu>

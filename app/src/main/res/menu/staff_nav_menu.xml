@@ -21,7 +21,7 @@
         android:title="Manage Check-in" />
 
     <item
-        android:id="@+id/staff_navigation_my_account"
+        android:id="@+id/myAccountFragment"
         android:icon="@drawable/account_icon"
         android:title="My Account" />
 </menu>

@@ -6,7 +6,7 @@
         android:title="User Management" />
 
     <item
-        android:id="@+id/admin_navigation_my_account"
+        android:id="@+id/myAccountFragment"
         android:icon="@drawable/account_icon"
         android:title="My Account" />
 </menu>

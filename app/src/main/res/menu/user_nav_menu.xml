@@ -16,7 +16,7 @@
         android:title="Order" />
 
     <item
-        android:id="@+id/user_navigation_my_account"
+        android:id="@+id/myAccountFragment"
         android:icon="@drawable/account_icon"
         android:title="My Account" />
 </menu>

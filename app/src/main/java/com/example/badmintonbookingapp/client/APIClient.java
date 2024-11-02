@@ -10,10 +10,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
-    // quang docker, check both ips in local and docker(linux), then config it in @xml/network_security_config
-    /*private static String baseUrl = "http://172.30.60.233:8080/";
-    private static String baseUrl = "http://172.30.48.0:8080/";*/
-    private static String baseUrl = "http://192.168.1.54:8080/api/v1/";
+    //check both ips in local and docker(linux), then config it in @xml/network_security_config
+    //quang docker
+    //private static String baseUrl = "http://172.30.60.233:8080";
+    //quang local
+    private static String baseUrl = "http://192.168.56.1:8080";
+    //phong local
+    //private static String baseUrl = "http://192.168.1.54:8080";
+
+    // Get Retrofit client with AuthInterceptor added for token handling
     private static Retrofit retrofit;
 
     public static Retrofit getClient(TokenManager tokenManager, AuthRepository authRepository) {

@@ -26,8 +26,8 @@
         android:label="User Payment"
         tools:layout="@layout/fragment_user_payment" />
     <fragment
-        android:id="@+id/staff_navigation_my_account"
-        android:name="com.example.badmintonbookingapp.ui.staff.my_account.StaffMyAccountFragment"
+        android:id="@+id/myAccountFragment"
+        android:name="com.example.badmintonbookingapp.ui.my_account.MyAccountFragment"
         android:label="My Account"
-        tools:layout="@layout/fragment_staff_my_account" />
+        tools:layout="@layout/fragment_my_account" />
 </navigation>

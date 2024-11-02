@@ -8,8 +8,8 @@ import org.json.JSONObject;
 
 public class TokenManager {
     private static final String PREF_NAME = "badminton_app_prefs";
-    private static final String KEY_ACCESS_TOKEN = "access_token";
-    private static final String KEY_REFRESH_TOKEN = "refresh_token";
+    private static final String KEY_ACCESS_TOKEN = null;
+    private static final String KEY_REFRESH_TOKEN = null;
 
     private static TokenManager instance;
     private SharedPreferences prefs;

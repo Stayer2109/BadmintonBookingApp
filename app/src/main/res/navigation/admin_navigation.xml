@@ -11,9 +11,9 @@
         android:label="User Management"
         tools:layout="@layout/fragment_user_management" />
     <fragment
-        android:id="@+id/admin_navigation_my_account"
-        android:name="com.example.badmintonbookingapp.ui.admin.my_account.AdminMyAccountFragment"
+        android:id="@+id/myAccountFragment"
+        android:name="com.example.badmintonbookingapp.ui.my_account.MyAccountFragment"
         android:label="My Account"
-        tools:layout="@layout/fragment_admin_my_account" />
+        tools:layout="@layout/fragment_my_account" />
 
 </navigation>
