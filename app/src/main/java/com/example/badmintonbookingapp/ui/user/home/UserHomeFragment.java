@@ -18,12 +18,25 @@ import android.view.ViewGroup;
 import com.example.badmintonbookingapp.R;
 import com.example.badmintonbookingapp.adapter.YardAdapter;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
+import com.example.badmintonbookingapp.repository.AuthRepository;
+import com.example.badmintonbookingapp.utils.TokenManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserHomeFragment extends Fragment {
+//    @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+//                             @Nullable Bundle savedInstanceState) {
+//        return inflater.inflate(R.layout.fragment_user_home, container, false);
+//    }
+//
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//    }
 
-    private UserHomeViewModel mViewModel;
+    private UserHomeViewModel homeViewModel;
     private YardAdapter yardAdapter;
 
     @Override
@@ -33,22 +46,26 @@ public class UserHomeFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        mViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
-                .get(UserHomeViewModel.class);
+        // Obtain instances of TokenManager and AuthRepository
+        TokenManager tokenManager = TokenManager.getInstance(requireContext());
+        AuthRepository authRepository = new AuthRepository(tokenManager); // Assuming constructor accepts TokenManager
 
-        RecyclerView recyclerViewYards = getView().findViewById(R.id.recyclerViewYards);
-        recyclerViewYards.setLayoutManager(new LinearLayoutManager(getContext()));
+        UserHomeViewModelFactory factory = new UserHomeViewModelFactory(tokenManager, authRepository);
+        homeViewModel = new ViewModelProvider(this, factory).get(UserHomeViewModel.class);
 
-        yardAdapter = new YardAdapter(null);  // Empty list initially
-        recyclerViewYards.setAdapter(yardAdapter);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewYards);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mViewModel.getYards().observe(getViewLifecycleOwner(), new Observer<List<YardResponseDTO>>() {
+        yardAdapter = new YardAdapter(new ArrayList<>());
+        recyclerView.setAdapter(yardAdapter);
+
+        homeViewModel.getAllYards().observe(getViewLifecycleOwner(), new Observer<List<YardResponseDTO>>() {
             @Override
-            public void onChanged(List<YardResponseDTO> yardResponseDTOS) {
-                yardAdapter.setYards(yardResponseDTOS);
+            public void onChanged(List<YardResponseDTO> yards) {
+                yardAdapter.setYards(yards);
                 yardAdapter.notifyDataSetChanged();
             }
         });

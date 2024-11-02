@@ -1,5 +1,10 @@
 package com.example.badmintonbookingapp.client;
 
+import com.example.badmintonbookingapp.network.AuthInterceptor;
+import com.example.badmintonbookingapp.repository.AuthRepository;
+import com.example.badmintonbookingapp.utils.TokenManager;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -16,15 +21,23 @@ public class APIClient {
     // Get Retrofit client with AuthInterceptor added for token handling
     private static Retrofit retrofit;
 
-    public static Retrofit getClient() {
+    public static Retrofit getClient(TokenManager tokenManager, AuthRepository authRepository) {
         if (retrofit == null) {
-            retrofit = new Retrofit.Builder().baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create()).build();
+            // Add AuthInterceptor to OkHttpClient
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(new AuthInterceptor(tokenManager, authRepository))  // AuthInterceptor should be added here
+                    .build();
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
         }
         return retrofit;
     }
 
-    public static <T> T getService(Class<T> serviceClass) {
-        return getClient().create(serviceClass);
+    public static <T> T getService(Class<T> serviceClass, TokenManager tokenManager, AuthRepository authRepository) {
+        return getClient(tokenManager, authRepository).create(serviceClass);
     }
 }
