@@ -15,37 +15,39 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface YardService {
-    @POST("yards/create")
+    String requestMapping = "/api/v1/yards";
+
+    @POST(requestMapping + "/create")
     Call<YardResponseDTO> createYard(@Body YardRequestDTO yardRequestDTO);
 
-    @GET("yards/province-ids")
+    @GET(requestMapping + "/province-ids")
     Call<List<Integer>> getProvinceIds();
 
-    @PUT("yards/update/{id}")
+    @PUT(requestMapping + "/update/{id}")
     Call<YardResponseDTO> updateYard(@Path("id") Integer id, @Body YardRequestDTO yardRequestDTO);
 
-    @GET("yards/{id}")
+    @GET(requestMapping + "/{id}")
     Call<YardResponseDTO> getYardById(@Path("id") Integer id);
 
-    @GET("yards")
+    @GET(requestMapping)
     Call<YardResponseWrapper> getAllYards(@Query("page") int page);
 
-    @GET("yards/active")
+    @GET(requestMapping + "/active")
     Call<List<YardResponseDTO>> getAllActiveYards(@Query("pageNumber") int pageNumber);
 
-    @GET("yards/search")
+    @GET(requestMapping + "/search")
     Call<List<YardResponseDTO>> getYardByName(@Query("name") String name, @Query("pageNumber") int pageNumber);
 
-    @GET("yards/getByHost/{hostId}")
+    @GET(requestMapping + "/getByHost/{hostId}")
     Call<List<YardResponseDTO>> getAllYardsByHostId(@Path("hostId") Integer hostId);
 
-    @GET("yards/{yardId}/active-slots")
+    @GET(requestMapping + "/{yardId}/active-slots")
     Call<YardResponseDTO> getYardDetailActiveSlots(@Path("yardId") Integer yardId);
 
-    @GET("yards/getRandom")
+    @GET(requestMapping + "/getRandom")
     Call<Object> getRandomYard();
 
-    @POST("yards/{yardId}/add-telephones")
+    @POST(requestMapping + "/{yardId}/add-telephones")
     Call<YardResponseDTO> addTelephonesToYard(@Path("yardId") Integer yardId, @Body List<String> telephones);
 
     @POST("yards/{yardId}/add-images")
