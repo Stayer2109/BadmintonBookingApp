@@ -59,13 +59,13 @@ public class UserHomeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewYards);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        yardAdapter = new YardAdapter(new ArrayList<>());
+        yardAdapter = new YardAdapter(null);
         recyclerView.setAdapter(yardAdapter);
 
         homeViewModel.getAllYards().observe(getViewLifecycleOwner(), new Observer<List<YardResponseDTO>>() {
             @Override
             public void onChanged(List<YardResponseDTO> yards) {
-                yardAdapter.setYards(yards);
+                yardAdapter.setYards(yards);  // Assuming you have a `setYards` method in YardAdapter
                 yardAdapter.notifyDataSetChanged();
             }
         });
