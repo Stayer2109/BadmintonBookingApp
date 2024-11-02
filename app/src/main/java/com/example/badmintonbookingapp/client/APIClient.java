@@ -20,7 +20,7 @@ public class APIClient {
         if (retrofit == null) {
             // Add AuthInterceptor to OkHttpClient
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                    .addInterceptor(new AuthInterceptor(tokenManager, authRepository))
+                    .addInterceptor(new AuthInterceptor(tokenManager, authRepository))  // AuthInterceptor should be added here
                     .build();
 
             retrofit = new Retrofit.Builder()
