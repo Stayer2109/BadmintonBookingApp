@@ -14,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.example.badmintonbookingapp.network.ApiCallback;
 import com.example.badmintonbookingapp.network.YardService;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
@@ -30,21 +31,24 @@ public class YardRepository {
         yardLiveData = new MutableLiveData<>(); // Initialize yardLiveData here
     }
 
-    public void fetchAllYards() {
-        yardService.getAllYards(0).enqueue(new Callback<YardResponseWrapper>() {
+    public void fetchYardsByPage(int pageNumber, ApiCallback<List<YardResponseDTO>> callback) {
+        yardService.getAllYards(pageNumber).enqueue(new Callback<YardResponseWrapper>() {
             @Override
             public void onResponse(Call<YardResponseWrapper> call, Response<YardResponseWrapper> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    yardsLiveData.postValue(response.body().getData());
-                    Log.d("YardRepository", "Fetched yards: " + response.body().getData());
+                    callback.onSuccess(response.body().getData());
+                    Log.d("YardRepository", "onResponse: " + response);
+                    Log.d("YardRepository", "Fetched yards on page " + pageNumber + ": " + response.body().getData());
                 } else {
-                    Log.e("YardRepository", "Failed to fetch yards: " + response.toString());
+                    callback.onError(new Throwable("Failed to fetch yards on page " + pageNumber));
+                    Log.e("YardRepository", "Failed to fetch yards on page " + pageNumber);
                 }
             }
 
             @Override
             public void onFailure(Call<YardResponseWrapper> call, Throwable t) {
-                Log.e("YardRepository", "Error fetching yards: " + t.getMessage());
+                callback.onError(t);
+                Log.e("YardRepository", "Error fetching yards on page " + pageNumber, t);
             }
         });
     }
