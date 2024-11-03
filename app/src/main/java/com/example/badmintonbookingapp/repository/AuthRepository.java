@@ -14,13 +14,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AuthRepository {
-    private AuthService authService;
-    private TokenManager tokenManager;
+    private final AuthService authService; // Make final
+    private final TokenManager tokenManager;
 
     public AuthRepository(TokenManager tokenManager) {
         // Pass both TokenManager and AuthRepository to APIClient.getService
         this.tokenManager = tokenManager;
         authService = APIClient.getService(AuthService.class, tokenManager, this);
+    }
+    public AuthRepository(AuthService authService, TokenManager tokenManager) { // Corrected Constructor
+        this.authService = authService;  // Initialize directly
+        this.tokenManager = tokenManager;
     }
 
     public void signIn(String username, String password, final ApiCallback<JwtAuthenticationResponse> callback) {

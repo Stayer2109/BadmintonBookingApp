@@ -16,7 +16,7 @@ public class TokenManager {
     private SharedPreferences.Editor editor;
 
     // Private constructor to prevent direct instantiation
-    private TokenManager(Context context) {
+    public TokenManager(Context context) {
         prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = prefs.edit();
     }
