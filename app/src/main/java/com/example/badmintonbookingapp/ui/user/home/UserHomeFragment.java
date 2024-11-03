@@ -22,6 +22,7 @@ import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
 import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserHomeFragment extends Fragment {
@@ -39,24 +40,31 @@ public class UserHomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Obtain instances of TokenManager and AuthRepository
         TokenManager tokenManager = TokenManager.getInstance(requireContext());
-        AuthRepository authRepository = new AuthRepository(tokenManager); // Assuming constructor accepts TokenManager
+        AuthRepository authRepository = new AuthRepository(tokenManager);
 
         UserHomeViewModelFactory factory = new UserHomeViewModelFactory(tokenManager, authRepository);
         homeViewModel = new ViewModelProvider(this, factory).get(UserHomeViewModel.class);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewYards);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
 
-        yardAdapter = new YardAdapter(getContext(), null);
+        yardAdapter = new YardAdapter(getContext(), new ArrayList<>());
         recyclerView.setAdapter(yardAdapter);
 
-        homeViewModel.getAllYards().observe(getViewLifecycleOwner(), new Observer<List<YardResponseDTO>>() {
+        homeViewModel.getAllYards().observe(getViewLifecycleOwner(), yards -> {
+            yardAdapter.setYards(yards);
+        });
+
+        // Infinite scroll listener
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onChanged(List<YardResponseDTO> yards) {
-                yardAdapter.setYards(yards);  // Assuming you have a `setYards` method in YardAdapter
-                yardAdapter.notifyDataSetChanged();
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && layoutManager.findLastCompletelyVisibleItemPosition() == yardAdapter.getItemCount() - 1) {
+                    homeViewModel.loadNextPage(); // Load next page when reaching the end
+                }
             }
         });
     }
