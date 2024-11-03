@@ -21,5 +21,5 @@ public interface SlotService {
     Call<SlotRequestDTO> updateSlot(@Path("slotId") Integer slotId, @Body SlotRequestDTO slotRequestDTO);
 
     @GET("/api/v1/slots/{yardId}")
-    Call<List<SlotResponseDTO>> getSlotsByYardId(@Path("yardId") Integer yardId, @Query("pageNumber") int pageNumber);
+    Call<List<SlotResponseDTO>> getSlotsByYardId(@Path("yardId") Integer yardId);
 }

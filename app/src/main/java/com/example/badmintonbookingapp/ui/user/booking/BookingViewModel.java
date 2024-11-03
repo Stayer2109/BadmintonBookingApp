@@ -10,6 +10,7 @@ import com.example.badmintonbookingapp.dto.response.SimpleYardResponseDTO;
 import com.example.badmintonbookingapp.dto.response.SlotResponseDTO;
 import com.example.badmintonbookingapp.network.BookingOrdersService;
 import com.example.badmintonbookingapp.repository.BookingRepository;
+import com.example.badmintonbookingapp.repository.SlotRepository;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -25,16 +26,25 @@ import retrofit2.Response;
 public class BookingViewModel extends ViewModel {
 
     private final BookingRepository bookingRepository;
+    private final SlotRepository slotRepository;
+    private final MutableLiveData<List<SlotResponseDTO>> slots = new MutableLiveData<>();
     private final MutableLiveData<List<BookingOrdersResponseDTO>> bookingOrders = new MutableLiveData<>();
+
     private final MutableLiveData<Boolean> bookingCreationStatus = new MutableLiveData<>();
     private final MutableLiveData<String> bookingUpdateStatus = new MutableLiveData<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 
-    public BookingViewModel(BookingRepository bookingRepository) {
+
+    public BookingViewModel(BookingRepository bookingRepository, SlotRepository slotRepository) {
         this.bookingRepository = bookingRepository;
+        this.slotRepository = slotRepository;
+
     }
 
+    public LiveData<List<SlotResponseDTO>> getSlots() {
+        return slots;
+    }
 
     public LiveData<List<BookingOrdersResponseDTO>> getBookingOrders() {
         return bookingOrders;
@@ -75,29 +85,51 @@ public class BookingViewModel extends ViewModel {
     }
 
 
-    public void createBooking(List<BookingOrdersRequestDTO> bookingRequestDTOs) {
+    public void createBooking(int yardId, int slotId, int userId) {
         executorService.execute(() -> {
+            List<BookingOrdersRequestDTO> bookingRequests = new ArrayList<>();
+            BookingOrdersRequestDTO bookingRequest = new BookingOrdersRequestDTO();
+            bookingRequest.setYardId(yardId);
+            bookingRequest.setSlotId(slotId);
+            bookingRequest.setUserId(userId);
+            bookingRequests.add(bookingRequest);
 
-            bookingRepository.createBookingOrders(bookingRequestDTOs, new Callback<List<BookingOrdersResponseDTO>>() {
+            bookingRepository.createBookingOrders(bookingRequests, new Callback<List<BookingOrdersResponseDTO>>() {
                 @Override
                 public void onResponse(Call<List<BookingOrdersResponseDTO>> call, Response<List<BookingOrdersResponseDTO>> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        bookingOrders.postValue(response.body()); // Update LiveData with the new booking
-                        bookingCreationStatus.postValue(true);
-                    } else {
-                        bookingCreationStatus.postValue(false);
-
-                    }
+                    bookingCreationStatus.postValue(response.isSuccessful());
                 }
 
                 @Override
                 public void onFailure(Call<List<BookingOrdersResponseDTO>> call, Throwable t) {
                     bookingCreationStatus.postValue(false);
-
                 }
             });
         });
     }
+
+    public void getSlotsByYardId(int yardId) {
+
+        slotRepository.getSlotsByYardId(yardId, new Callback<List<SlotResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<SlotResponseDTO>> call, Response<List<SlotResponseDTO>> response) {
+                if(response.isSuccessful()){
+                    slots.postValue(response.body());
+
+                }else{
+                    slots.postValue(null);
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<List<SlotResponseDTO>> call, Throwable t) {
+                slots.postValue(null);
+
+            }
+        });
+    }
+
 
 
     public void updateBookingOrderStatus(int bookingId) {

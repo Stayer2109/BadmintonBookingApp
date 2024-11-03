@@ -22,6 +22,9 @@ public class SlotResponseDTO {
 
     private Integer updateBy;
 
+    public SlotResponseDTO() {
+    }
+
     public SlotResponseDTO(Integer id, Double price, String status, LocalTime startTime, LocalTime endTime, LocalDate createDate, LocalDate updateDate, Integer createBy, Integer updateBy) {
         this.id = id;
         this.price = price;
