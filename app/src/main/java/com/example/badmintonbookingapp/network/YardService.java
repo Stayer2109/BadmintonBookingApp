@@ -31,7 +31,7 @@ public interface YardService {
     Call<YardResponseDTO> getYardById(@Path("id") Integer id);
 
     @GET(requestMapping)
-    Call<YardResponseWrapper> getAllYards(@Query("page") int page);
+    Call<YardResponseWrapper> getAllYards(@Query("pageNumber") int pageNumber);
 
     @GET(requestMapping + "/active")
     Call<List<YardResponseDTO>> getAllActiveYards(@Query("pageNumber") int pageNumber);
