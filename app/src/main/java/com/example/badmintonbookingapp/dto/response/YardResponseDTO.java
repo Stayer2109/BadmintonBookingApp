@@ -77,6 +77,9 @@ public class YardResponseDTO {
         this.images = images;
     }
 
+    public YardResponseDTO(int id, String centralParkCourt, String address, int provinceId, String mainCourtInCentralPark, boolean status, String time, String time1) {
+    }
+
     public Integer getId() {
         return id;
     }

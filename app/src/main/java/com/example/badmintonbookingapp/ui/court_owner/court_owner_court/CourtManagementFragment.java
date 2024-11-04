@@ -4,64 +4,71 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.badmintonbookingapp.R;
-import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
+import com.example.badmintonbookingapp.adapter.OwnerYardAdapter;
 import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.repository.YardRepository;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
-import java.util.List;
-
-
 public class CourtManagementFragment extends Fragment {
 
-    private YardRepository yardRepository;
-    private ListView yardListView;
+    private CourtManagementViewModel viewModel;
+    private OwnerYardAdapter yardAdapter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Get instances of TokenManager and AuthRepository
-        TokenManager tokenManager = TokenManager.getInstance(getContext());
-        AuthRepository authRepository = new AuthRepository(tokenManager); // Adjust this if necessary
-
-        // Initialize YardRepository
-        yardRepository = new YardRepository(tokenManager, authRepository);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_court_management, container, false);
-        yardListView = view.findViewById(R.id.yard_list_view);
+        TokenManager tokenManager = TokenManager.getInstance(requireContext());
+        AuthRepository authRepository = new AuthRepository(tokenManager);
+
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this, new CourtManagementViewModelFactory(tokenManager, authRepository)).get(CourtManagementViewModel.class);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView_yards);
         Button btnAddYard = view.findViewById(R.id.btn_add_yard);
 
-        yardRepository.getYards().observe(getViewLifecycleOwner(), new Observer<List<YardResponseDTO>>() {
+        // Set up RecyclerView
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        yardAdapter = new OwnerYardAdapter(getContext(), null);
+
+        Toast.makeText(getContext(), "Hello: " + tokenManager.getId(), Toast.LENGTH_SHORT).show();
+
+        recyclerView.setAdapter(yardAdapter);
+
+        viewModel.getAllYards().observe(getViewLifecycleOwner(), yards -> {
+            yardAdapter.setYards(yards);
+        });
+
+        // Infinite scroll listener
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onChanged(List<YardResponseDTO> yards) {
-                ArrayAdapter<YardResponseDTO> adapter = new ArrayAdapter<>(getContext(),
-                        android.R.layout.simple_list_item_1, yards);
-                yardListView.setAdapter(adapter);
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && layoutManager.findLastCompletelyVisibleItemPosition() == yardAdapter.getItemCount() - 1) {
+                    viewModel.loadNextPage(); // Load next page when reaching the end
+                }
             }
         });
 
+        // Handle button click for adding a yard
         btnAddYard.setOnClickListener(v -> {
-            AddYardActivity dialog = new AddYardActivity();
-            dialog.show(getChildFragmentManager(), "AddYardDialog");
+            // Implement adding a yard logic here
         });
 
         return view;
     }
-
 }
+
+
+
 

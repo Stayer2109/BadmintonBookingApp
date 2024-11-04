@@ -1,6 +1,7 @@
 package com.example.badmintonbookingapp.ui.court_owner.court_owner_court;
 
 import android.app.Dialog;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,72 +10,54 @@ import androidx.lifecycle.ViewModel;
 import com.example.badmintonbookingapp.dto.request.YardRequestDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
 import com.example.badmintonbookingapp.network.ApiCallback;
+import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.repository.YardRepository;
+import com.example.badmintonbookingapp.utils.TokenManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourtManagementViewModel extends ViewModel {
 
     private final YardRepository yardRepository;
-    private final MutableLiveData<List<YardResponseDTO>> yardsLiveData = new MutableLiveData<>();
-    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
-    private int currentPage = 1;
+    private final MutableLiveData<List<YardResponseDTO>> allYards;
+    private int currentPage = 0;
+    private boolean isLastPage = false;
 
-    // Constructor
-    public CourtManagementViewModel(YardRepository yardRepository) {
-        this.yardRepository = yardRepository;
+    public CourtManagementViewModel(TokenManager tokenManager, AuthRepository authRepository) {
+        yardRepository = new YardRepository(tokenManager, authRepository);
+        allYards = new MutableLiveData<>(new ArrayList<>());
+        loadNextPage();
     }
 
-    // Expose LiveData for yards data
-    public LiveData<List<YardResponseDTO>> getYards() {
-        return yardsLiveData;
-    }
+    public void loadNextPage() {
+        if (isLastPage) return; // Stop loading if there are no more pages
 
-    // Expose LiveData for loading state
-    public LiveData<Boolean> getIsLoading() {
-        return isLoading;
-    }
-
-    // Expose LiveData for error messages
-    public LiveData<String> getErrorMessage() {
-        return errorMessage;
-    }
-
-    // Method to load yards from the repository
-    public void loadYardsByPage(int pageNumber) {
-        isLoading.setValue(true); // Set loading state
-
-        yardRepository.fetchYardsByPage(pageNumber, new ApiCallback<List<YardResponseDTO>>() {
+        yardRepository.fetchYardsByPage(currentPage, new ApiCallback<List<YardResponseDTO>>() {
             @Override
-            public void onSuccess(List<YardResponseDTO> yards) {
-                yardsLiveData.setValue(yards); // Set the yard data
-                isLoading.setValue(false);     // Reset loading state
-                currentPage = pageNumber;      // Update current page
+            public void onSuccess(List<YardResponseDTO> newYards) {
+                if (newYards.isEmpty()) {
+                    isLastPage = true; // Mark as last page if no items are returned
+                } else {
+                    List<YardResponseDTO> currentYards = allYards.getValue();
+                    if (currentYards == null) {
+                        currentYards = new ArrayList<>();
+                    }
+
+                    currentYards.addAll(newYards);
+                    allYards.postValue(currentYards);
+                    currentPage++;
+                }
             }
 
             @Override
-            public void onError(Throwable t) {
-                errorMessage.setValue("Failed to load yards: " + t.getMessage()); // Set error message
-                isLoading.setValue(false); // Reset loading state
+            public void onError(Throwable error) {
+                Log.e("UserHomeViewModel", "Error loading yards: " + error.getMessage());
             }
         });
     }
 
-    // Load the next page of yards
-    public void loadNextPage() {
-        loadYardsByPage(currentPage + 1);
-    }
-
-    // Load the previous page of yards
-    public void loadPreviousPage() {
-        if (currentPage > 1) {
-            loadYardsByPage(currentPage - 1);
-        }
-    }
-
-    public void createYard(YardRequestDTO yardRequestDTO, Dialog dialog) {
-        yardRepository.createYard(yardRequestDTO, dialog);
+    public LiveData<List<YardResponseDTO>> getAllYards() {
+        return allYards;
     }
 }
-
