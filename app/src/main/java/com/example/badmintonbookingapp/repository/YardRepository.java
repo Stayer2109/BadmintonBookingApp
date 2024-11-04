@@ -1,11 +1,13 @@
 package com.example.badmintonbookingapp.repository;
 
+import android.app.Dialog;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.badmintonbookingapp.client.APIClient;
+import com.example.badmintonbookingapp.dto.request.YardRequestDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
 import com.example.badmintonbookingapp.dto.response.wrapper.YardDetailResponseWrapper;
 import com.example.badmintonbookingapp.dto.response.wrapper.YardResponseWrapper;
@@ -79,5 +81,29 @@ public class YardRepository {
 
     public LiveData<YardResponseDTO> getYard() {
         return yardLiveData;
+    }
+
+    public void createYard(YardRequestDTO yardRequestDTO, Dialog dialog) {
+        yardService.createYard(yardRequestDTO).enqueue(new Callback<YardResponseDTO>() {
+            @Override
+            public void onResponse(Call<YardResponseDTO> call, Response<YardResponseDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("YardRepository", "Created new yard: " + response.body());
+                    dialog.dismiss(); // Dismiss dialog after successful creation
+                    // Optionally, refresh the list of yards or update UI here
+                } else {
+                    Log.e("YardRepository", "Failed to create yard: " + response.toString());
+                    dialog.dismiss(); // Ensure dialog is dismissed even on failure
+                    // Optionally, show an error message to the user
+                }
+            }
+
+            @Override
+            public void onFailure(Call<YardResponseDTO> call, Throwable t) {
+                Log.e("YardRepository", "Error creating yard: " + t.getMessage());
+                dialog.dismiss(); // Dismiss dialog on error as well
+                // Optionally, show an error message to the user
+            }
+        });
     }
 }
