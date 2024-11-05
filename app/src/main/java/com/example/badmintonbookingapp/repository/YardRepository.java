@@ -93,30 +93,38 @@ public class YardRepository {
         });
     }
 
+    public void createYard(YardRequestDTO yard, ApiCallback<YardResponseDTO> callback) {
+        yardService.createYard(yard).enqueue(new Callback<YardResponseDTO>() {
+            @Override
+            public void onResponse(Call<YardResponseDTO> call, Response<YardResponseDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Call onSuccess on the callback with the response body
+                    callback.onSuccess(response.body());
+                    Log.d("YardRepository", "Yard created successfully: " + response.body().getName());
+
+                    // Optionally, update yardLiveData if needed for observing in UI
+                    yardLiveData.postValue(response.body());
+                } else {
+                    // Call onError on the callback with an appropriate error message
+                    callback.onError(new Throwable("Failed to create yard: " + response.message()));
+                    Log.e("YardRepository", "Failed to create yard: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<YardResponseDTO> call, Throwable throwable) {
+                // Call onError on the callback in case of a network failure or other issues
+                callback.onError(throwable);
+                Log.e("YardRepository", "Error creating yard", throwable);
+            }
+        });
+    }
+
     public LiveData<List<YardResponseDTO>> getYards() {
         return yardsLiveData;
     }
 
     public LiveData<YardResponseDTO> getYard() {
         return yardLiveData;
-    }
-
-
-    public void createYard(YardRequestDTO yardRequestDTO, ApiCallback<YardResponseDTO> callback) {
-        yardService.createYard(yardRequestDTO).enqueue(new retrofit2.Callback<YardResponseDTO>() {
-            @Override
-            public void onResponse(Call<YardResponseDTO> call, Response<YardResponseDTO> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callback.onSuccess(response.body());
-                } else {
-                    callback.onError(new Throwable("Error: " + response.message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<YardResponseDTO> call, Throwable t) {
-                callback.onError(t);
-            }
-        });
     }
 }

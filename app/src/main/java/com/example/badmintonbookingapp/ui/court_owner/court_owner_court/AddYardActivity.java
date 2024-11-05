@@ -1,6 +1,7 @@
 package com.example.badmintonbookingapp.ui.court_owner.court_owner_court;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -21,7 +22,7 @@ import java.time.LocalTime;
 
 public class AddYardActivity extends AppCompatActivity {
 
-    private EditText yardName, yardAddress, provinceId, yardDescription;
+    private EditText yardName, yardAddress, provinceIdEd, yardDescription;
     private TimePicker openTime, closeTime;
     private CourtManagementViewModel courtManagementViewModel;
 
@@ -48,7 +49,7 @@ public class AddYardActivity extends AppCompatActivity {
         // Initialize UI components
         yardName = findViewById(R.id.yard_name);
         yardAddress = findViewById(R.id.yard_address);
-        provinceId = findViewById(R.id.province_id);
+        provinceIdEd = findViewById(R.id.province_id);
         yardDescription = findViewById(R.id.yard_description);
         openTime = findViewById(R.id.open_time);
         closeTime = findViewById(R.id.close_time);
@@ -58,17 +59,17 @@ public class AddYardActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(v -> {
             String name = yardName.getText().toString().trim();
             String address = yardAddress.getText().toString().trim();
-            String provinceIdStr = provinceId.getText().toString().trim();
+            String provinceId = provinceIdEd.getText().toString().trim();
             String description = yardDescription.getText().toString().trim();
 
-            if (name.isEmpty() || address.isEmpty() || provinceIdStr.isEmpty() || description.isEmpty()) {
+            if (name.isEmpty() || address.isEmpty() || provinceId.isEmpty() || description.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             int provinceIdValue;
             try {
-                provinceIdValue = Integer.parseInt(provinceIdStr);
+                provinceIdValue = Integer.parseInt(provinceId);
             } catch (NumberFormatException e) {
                 Toast.makeText(this, "Invalid province ID format", Toast.LENGTH_SHORT).show();
                 return;
@@ -83,21 +84,10 @@ public class AddYardActivity extends AppCompatActivity {
                     name, address, provinceIdValue, description, status, openTimeValue, closeTimeValue, hostId
             );
 
+            Log.d("CON CAC", "" + yardRequestDTO.toString());
+
             // Call ViewModel to create the yard
             courtManagementViewModel.createYard(yardRequestDTO);
-        });
-
-        // Observe LiveData for created yard
-        courtManagementViewModel.getCreatedYard().observe(this, new Observer<YardResponseDTO>() {
-            @Override
-            public void onChanged(YardResponseDTO yardResponseDTO) {
-                if (yardResponseDTO != null) {
-                    Toast.makeText(AddYardActivity.this, "Yard created successfully!", Toast.LENGTH_SHORT).show();
-                    finish(); // Close activity after successful creation
-                } else {
-                    Toast.makeText(AddYardActivity.this, "Failed to create yard", Toast.LENGTH_SHORT).show();
-                }
-            }
         });
     }
 }

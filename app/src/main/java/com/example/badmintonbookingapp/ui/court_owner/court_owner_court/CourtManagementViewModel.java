@@ -74,15 +74,13 @@
             });
         }
 
-        public LiveData<YardResponseDTO> getCreatedYard() {
-            return createdYard;
-        }
-
         public void createYard(YardRequestDTO yardRequestDTO) {
             yardRepository.createYard(yardRequestDTO, new ApiCallback<YardResponseDTO>() {
                 @Override
-                public void onSuccess(YardResponseDTO yard) {
-                    createdYard.postValue(yard);
+                public void onSuccess(YardResponseDTO result) {
+                    createdYard.postValue(result);
+                    // Reset after posting, so it doesn’t trigger again
+                    createdYard.postValue(null);
                 }
 
                 @Override
@@ -90,6 +88,11 @@
                     Log.e("CourtManagementViewModel", "Error creating yard: " + error.getMessage());
                 }
             });
+        }
+
+
+        public LiveData<YardResponseDTO> getCreatedYard() {
+            return createdYard;
         }
 
         public LiveData<List<YardResponseDTO>> getAllYards() {

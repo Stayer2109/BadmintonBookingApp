@@ -59,8 +59,6 @@ public class CourtManagementFragment extends Fragment {
             startActivity(intent);
         });
 
-
-// Observe the created yard response
         viewModel.getCreatedYard().observe(getViewLifecycleOwner(), createdYard -> {
             if (createdYard != null) {
                 Toast.makeText(getContext(), "Yard created successfully: " + createdYard.getName(), Toast.LENGTH_SHORT).show();

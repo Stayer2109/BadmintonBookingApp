@@ -1,5 +1,7 @@
 package com.example.badmintonbookingapp.dto.request;
 
+import androidx.annotation.NonNull;
+
 import java.time.LocalTime;
 
 public class YardRequestDTO {
@@ -91,5 +93,20 @@ public class YardRequestDTO {
 
     public boolean isStatus() {
         return status == 1;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "YardRequestDTO{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", provinceId=" + provinceId +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", openTime=" + openTime +
+                ", closeTime=" + closeTime +
+                ", hostId=" + hostId +
+                '}';
     }
 }
