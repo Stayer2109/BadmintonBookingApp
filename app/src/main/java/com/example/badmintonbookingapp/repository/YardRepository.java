@@ -55,6 +55,24 @@ public class YardRepository {
         });
     }
 
+    public void fetchYardsByHostId(int hostId, ApiCallback<List<YardResponseDTO>> callback) {
+        yardService.getAllYardsByHostId(hostId).enqueue(new retrofit2.Callback<List<YardResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<YardResponseDTO>> call, Response<List<YardResponseDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError(new Throwable("Error: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<YardResponseDTO>> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+    }
+
     // Fetch yard details by ID and update yardLiveData
     public void getYardById(int id) {
         yardService.getYardById(id).enqueue(new Callback<YardResponseDTO>() {
@@ -83,26 +101,21 @@ public class YardRepository {
         return yardLiveData;
     }
 
-    public void createYard(YardRequestDTO yardRequestDTO, Dialog dialog) {
-        yardService.createYard(yardRequestDTO).enqueue(new Callback<YardResponseDTO>() {
+
+    public void createYard(YardRequestDTO yardRequestDTO, ApiCallback<YardResponseDTO> callback) {
+        yardService.createYard(yardRequestDTO).enqueue(new retrofit2.Callback<YardResponseDTO>() {
             @Override
             public void onResponse(Call<YardResponseDTO> call, Response<YardResponseDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("YardRepository", "Created new yard: " + response.body());
-                    dialog.dismiss(); // Dismiss dialog after successful creation
-                    // Optionally, refresh the list of yards or update UI here
+                    callback.onSuccess(response.body());
                 } else {
-                    Log.e("YardRepository", "Failed to create yard: " + response.toString());
-                    dialog.dismiss(); // Ensure dialog is dismissed even on failure
-                    // Optionally, show an error message to the user
+                    callback.onError(new Throwable("Error: " + response.message()));
                 }
             }
 
             @Override
             public void onFailure(Call<YardResponseDTO> call, Throwable t) {
-                Log.e("YardRepository", "Error creating yard: " + t.getMessage());
-                dialog.dismiss(); // Dismiss dialog on error as well
-                // Optionally, show an error message to the user
+                callback.onError(t);
             }
         });
     }

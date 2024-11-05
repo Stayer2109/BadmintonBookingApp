@@ -23,6 +23,7 @@
         android:id="@+id/province_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="number"
         android:hint="Province ID"/>
 
     <EditText
@@ -31,17 +32,29 @@
         android:layout_height="wrap_content"
         android:hint="Description"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Open Time:" />
+
     <TimePicker
         android:id="@+id/open_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner"/>
+        android:timePickerMode="spinner" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Close Time:" />
 
     <TimePicker
         android:id="@+id/close_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner"/>
+        android:timePickerMode="spinner" />
 
     <Button
         android:id="@+id/btn_add"

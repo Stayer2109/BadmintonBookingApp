@@ -25,6 +25,8 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.court_owner.court_owner_court.AddYardActivity" />
+        <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="true">
             <intent-filter>
