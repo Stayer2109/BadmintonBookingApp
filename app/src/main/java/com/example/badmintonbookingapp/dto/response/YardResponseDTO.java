@@ -77,6 +77,9 @@ public class YardResponseDTO {
         this.images = images;
     }
 
+    public YardResponseDTO(int id, String centralParkCourt, String address, int provinceId, String mainCourtInCentralPark, boolean status, String time, String time1) {
+    }
+
     public Integer getId() {
         return id;
     }
@@ -205,25 +208,4 @@ public class YardResponseDTO {
         this.images = images;
     }
 
-    @Override
-    public String toString() {
-        return "YardResponseDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", provinceId=" + provinceId +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                ", openTime=" + openTime +
-                ", closeTime=" + closeTime +
-                ", createDate=" + createDate +
-                ", updateDate=" + updateDate +
-                ", createBy=" + createBy +
-                ", updateBy=" + updateBy +
-                ", hostId=" + hostId +
-                ", telephones=" + telephones +
-                ", slots=" + slots +
-                ", images=" + images +
-                '}';
-    }
 }

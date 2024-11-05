@@ -1,11 +1,13 @@
 package com.example.badmintonbookingapp.repository;
 
+import android.app.Dialog;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.badmintonbookingapp.client.APIClient;
+import com.example.badmintonbookingapp.dto.request.YardRequestDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
 import com.example.badmintonbookingapp.dto.response.wrapper.YardDetailResponseWrapper;
 import com.example.badmintonbookingapp.dto.response.wrapper.YardResponseWrapper;
@@ -53,6 +55,24 @@ public class YardRepository {
         });
     }
 
+    public void fetchYardsByHostId(int hostId, ApiCallback<List<YardResponseDTO>> callback) {
+        yardService.getAllYardsByHostId(hostId).enqueue(new retrofit2.Callback<List<YardResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<YardResponseDTO>> call, Response<List<YardResponseDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onSuccess(response.body());
+                } else {
+                    callback.onError(new Throwable("Error: " + response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<YardResponseDTO>> call, Throwable t) {
+                callback.onError(t);
+            }
+        });
+    }
+
     // Fetch yard details by ID and update yardLiveData
     public void getYardById(int id) {
         yardService.getYardById(id).enqueue(new Callback<YardResponseDTO>() {
@@ -69,6 +89,33 @@ public class YardRepository {
             @Override
             public void onFailure(Call<YardResponseDTO> call, Throwable throwable) {
 
+            }
+        });
+    }
+
+    public void createYard(YardRequestDTO yard, ApiCallback<YardResponseDTO> callback) {
+        yardService.createYard(yard).enqueue(new Callback<YardResponseDTO>() {
+            @Override
+            public void onResponse(Call<YardResponseDTO> call, Response<YardResponseDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Call onSuccess on the callback with the response body
+                    callback.onSuccess(response.body());
+                    Log.d("YardRepository", "Yard created successfully: " + response.body().getName());
+
+                    // Optionally, update yardLiveData if needed for observing in UI
+                    yardLiveData.postValue(response.body());
+                } else {
+                    // Call onError on the callback with an appropriate error message
+                    callback.onError(new Throwable("Failed to create yard: " + response.message()));
+                    Log.e("YardRepository", "Failed to create yard: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<YardResponseDTO> call, Throwable throwable) {
+                // Call onError on the callback in case of a network failure or other issues
+                callback.onError(throwable);
+                Log.e("YardRepository", "Error creating yard", throwable);
             }
         });
     }

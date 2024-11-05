@@ -16,11 +16,17 @@
         android:theme="@style/Theme.BadmintonBookingApp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.court_owner.court_owner_court.YardOwnerDetail"
+            android:exported="false" />
+        <activity
             android:name=".ui.not_fragment.court_detail.YardDetailActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
+        <activity
+            android:name=".ui.court_owner.court_owner_court.AddYardActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="true">

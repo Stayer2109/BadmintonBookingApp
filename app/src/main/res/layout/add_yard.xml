@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.court_owner.court_owner_court.AddYardActivity">
+
+    <EditText
+        android:id="@+id/yard_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Yard Name"/>
+
+    <EditText
+        android:id="@+id/yard_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Yard Address"/>
+
+    <EditText
+        android:id="@+id/province_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="Province ID"/>
+
+    <EditText
+        android:id="@+id/yard_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Open Time:" />
+
+    <TimePicker
+        android:id="@+id/open_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Close Time:" />
+
+    <TimePicker
+        android:id="@+id/close_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Yard"/>
+
+
+</LinearLayout>

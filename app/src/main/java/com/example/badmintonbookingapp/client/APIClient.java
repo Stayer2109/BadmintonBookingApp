@@ -32,6 +32,7 @@ public class APIClient {
         if (retrofit == null) {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer()) // Register the LocalTime deserializer
+                    .registerTypeAdapter(Boolean.class, new BooleanDeserializer())
                     .create();
 
             // Add AuthInterceptor to OkHttpClient
