@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.badmintonbookingapp.client.APIClient;
 import com.example.badmintonbookingapp.dto.request.YardRequestDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
-import com.example.badmintonbookingapp.dto.response.wrapper.YardDetailResponseWrapper;
 import com.example.badmintonbookingapp.dto.response.wrapper.YardResponseWrapper;
 
 import retrofit2.Call;
@@ -97,15 +96,18 @@ public class YardRepository {
         yardService.createYard(yard).enqueue(new Callback<YardResponseDTO>() {
             @Override
             public void onResponse(Call<YardResponseDTO> call, Response<YardResponseDTO> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    // Call onSuccess on the callback with the response body
-                    callback.onSuccess(response.body());
-                    Log.d("YardRepository", "Yard created successfully: " + response.body().getName());
+                if (response.isSuccessful()) {
+                    YardResponseDTO yardResponse = response.body();
 
-                    // Optionally, update yardLiveData if needed for observing in UI
-                    yardLiveData.postValue(response.body());
+                    if (yardResponse != null) {
+                        Log.d("YardRepository", "Full YardResponse: " + yardResponse);
+                        callback.onSuccess(yardResponse);
+                    } else {
+                        // Handle the null response scenario
+                        Log.e("YardRepository", "Received null YardResponse from the server");
+                        callback.onError(new Throwable("Server returned no data for the created yard"));
+                    }
                 } else {
-                    // Call onError on the callback with an appropriate error message
                     callback.onError(new Throwable("Failed to create yard: " + response.message()));
                     Log.e("YardRepository", "Failed to create yard: " + response.message());
                 }
