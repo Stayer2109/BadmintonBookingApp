@@ -31,3 +31,6 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# APIClient.java
+app/src/main/java/com/example/badmintonbookingapp/client/APIClient.java
