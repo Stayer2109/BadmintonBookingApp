@@ -84,6 +84,71 @@ public class TokenManager {
         return prefs.getString(KEY_REFRESH_TOKEN, null);
     }
 
+    public boolean IsExpired (){
+        String accessToken = getAccessToken();
+        if (accessToken == null) return true;
+
+        try {
+            // Split the JWT into its parts and decode the payload
+            String[] parts = accessToken.split("\\.");
+            if (parts.length < 2) return true;
+
+            // Decode payload (second part of JWT) from Base64
+            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+            JSONObject jsonObject = new JSONObject(payload);
+
+            // Extract "exp" field from JSON payload
+            long exp = jsonObject.optLong("exp", 0);
+            long now = System.currentTimeMillis() / 1000;
+            return now >= exp;
+        } catch (JSONException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
+
+    public int getId (){
+        String accessToken = getAccessToken();
+        if (accessToken == null) return -1;
+
+        try {
+            // Split the JWT into its parts and decode the payload
+            String[] parts = accessToken.split("\\.");
+            if (parts.length < 2) return -1;
+
+            // Decode payload (second part of JWT) from Base64
+            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+            JSONObject jsonObject = new JSONObject(payload);
+
+            // Extract "id" field from JSON payload
+            return jsonObject.optInt("id", -1);
+        } catch (JSONException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public String getUsername() {
+        String accessToken = getAccessToken();
+        if (accessToken == null) return null;
+
+        try {
+            // Split the JWT into its parts and decode the payload
+            String[] parts = accessToken.split("\\.");
+            if (parts.length < 2) return null;
+
+            // Decode payload (second part of JWT) from Base64
+            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+            JSONObject jsonObject = new JSONObject(payload);
+
+            // Extract "username" field from JSON payload
+            return jsonObject.optString("sub", null);
+        } catch (JSONException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void clearTokens() {
         editor.remove(KEY_ACCESS_TOKEN);
         editor.remove(KEY_REFRESH_TOKEN);

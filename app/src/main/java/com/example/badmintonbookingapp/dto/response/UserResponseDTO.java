@@ -9,8 +9,11 @@ public class UserResponseDTO {
     private Boolean status;
     private Boolean gender;
     private Date dob;
-    private String firstName;
-    private String lastName;
+    private String first_name;
+    private String last_name;
+
+    public UserResponseDTO() {
+    }
 
     public UserResponseDTO(Integer id, String username, String email, Boolean status, Boolean gender, Date dob, String firstName, String lastName) {
         this.id = id;
@@ -19,8 +22,8 @@ public class UserResponseDTO {
         this.status = status;
         this.gender = gender;
         this.dob = dob;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.first_name = firstName;
+        this.last_name = lastName;
     }
 
     public Integer getId() {
@@ -72,18 +75,18 @@ public class UserResponseDTO {
     }
 
     public String getFirstName() {
-        return firstName;
+        return first_name;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.first_name = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return last_name;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.last_name = lastName;
     }
 }

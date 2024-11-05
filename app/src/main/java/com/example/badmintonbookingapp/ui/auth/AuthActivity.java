@@ -127,12 +127,14 @@ public class AuthActivity extends AppCompatActivity {
 
     // Check if user is already signed in and navigate to main activity
     private void checkUser() {
-        if (tokenManager.getAccessToken() != null) {
-            // Navigate to main activity
-            Toast.makeText(this, "Sign-in Successful!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+        if (tokenManager.IsExpired()) {
+            tokenManager.clearTokens();
+            return;
         }
+
+        Toast.makeText(this, "Sign-in Successful!", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     // Method to handle register button click

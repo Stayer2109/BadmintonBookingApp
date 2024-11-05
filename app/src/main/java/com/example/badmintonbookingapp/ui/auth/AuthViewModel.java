@@ -61,6 +61,8 @@ public class AuthViewModel extends AndroidViewModel {
         authRepository.getAccount(new ApiCallback<UserResponseDTO>() {
             @Override
             public void onSuccess(UserResponseDTO result) {
+                result.setId(tokenManager.getId());
+                result.setUsername(tokenManager.getUsername());
                 accountInfo.setValue((UserResponseDTO) result);
             }
 

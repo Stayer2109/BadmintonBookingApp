@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.badmintonbookingapp.R;
 import com.example.badmintonbookingapp.ui.auth.AuthActivity;
 import com.example.badmintonbookingapp.ui.auth.AuthViewModel;
+import com.example.badmintonbookingapp.utils.TokenManager;
 
 import java.text.SimpleDateFormat;
 
@@ -28,6 +29,7 @@ public class MyAccountFragment extends Fragment {
     private CardView cardMyAccount;
     private TextView tvUsername, tvEmail, tvName, tvGender, tvDob;
     private Button btnLogout;
+    private TokenManager tokenManager;
 
     public static MyAccountFragment newInstance() {
         return new MyAccountFragment();
@@ -66,19 +68,21 @@ public class MyAccountFragment extends Fragment {
         authViewModel.getAccountInfo().observe(getViewLifecycleOwner(), userResponseDTO -> {
             if (userResponseDTO != null) {
                 tvUsername.setText(userResponseDTO.getUsername());
-                tvEmail.setText(userResponseDTO.getEmail());
-                tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
+                //tvEmail.setText(userResponseDTO.getEmail());
+                //tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
 
-                // Set gender
+                /*// Set gender
                 tvGender.setText(userResponseDTO.getGender() ? "male" : "female");
 
                 // Format and display date of birth
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 String dob = formatter.format(userResponseDTO.getDob());
-                tvDob.setText(dob);
+                tvDob.setText(dob);*/
             }
 
         });
+        /*tokenManager = TokenManager.getInstance(getActivity());
+        tvUsername.setText(tokenManager.getUsername());*/
     }
 
     private void Logout() {

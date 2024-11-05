@@ -1,9 +1,12 @@
 package com.example.badmintonbookingapp.network;
 
+import com.example.badmintonbookingapp.dto.ApiResponse;
 import com.example.badmintonbookingapp.dto.request.SignInRequest;
 import com.example.badmintonbookingapp.dto.request.SignUpRequest;
 import com.example.badmintonbookingapp.dto.response.JwtAuthenticationResponse;
 import com.example.badmintonbookingapp.dto.response.UserResponseDTO;
+import com.example.badmintonbookingapp.dto.response.wrapper.UserResponseWrapper;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,5 +29,5 @@ public interface AuthService {
      Call<Void> logOut();
 
      @GET(requestMapping + "/account")
-     Call<UserResponseDTO> getAccount();
+     Call<ApiResponse<JsonObject>> getAccount();
 }

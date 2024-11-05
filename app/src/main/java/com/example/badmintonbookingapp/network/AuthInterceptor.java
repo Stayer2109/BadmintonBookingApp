@@ -1,6 +1,8 @@
 package com.example.badmintonbookingapp.network;
 
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.utils.TokenManager;
@@ -34,17 +36,7 @@ public class AuthInterceptor implements Interceptor {
 
         // If token expired, attempt to refresh
         if (response.code() == 401) {
-            String newAccessToken = authRepository.refreshToken();
-
-            if (newAccessToken != null) {
-                tokenManager.saveTokens(newAccessToken, tokenManager.getRefreshToken());
-                // Retry the original request with new token
-                Request newRequest = request.newBuilder()
-                        .header("Authorization", "Bearer " + newAccessToken)
-                        .build();
-                response.close();
-                return chain.proceed(newRequest);
-            }
+            Log.e("AuthInterceptor", "Token expired: " + response);
         } else if (response.code() == 403) {
             Log.e("AuthInterceptor", "Access forbidden: " + response);
         }
