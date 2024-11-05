@@ -55,6 +55,26 @@ public class AddYardActivity extends AppCompatActivity {
         closeTime = findViewById(R.id.close_time);
         Button btnAdd = findViewById(R.id.btn_add);
 
+        // Observe LiveData for creation success or error
+        courtManagementViewModel.getCreatedYard().observe(this, new Observer<YardResponseDTO>() {
+            @Override
+            public void onChanged(YardResponseDTO yardResponseDTO) {
+                if (yardResponseDTO != null) {
+                    Toast.makeText(AddYardActivity.this, "Yard created successfully!", Toast.LENGTH_SHORT).show();
+                    finish(); // Optionally finish the activity to return to previous screen
+                }
+            }
+        });
+
+        courtManagementViewModel.getError().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String errorMessage) {
+                if (errorMessage != null) {
+                    Toast.makeText(AddYardActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         // Set up button click listener for creating a yard
         btnAdd.setOnClickListener(v -> {
             String name = yardName.getText().toString().trim();
@@ -62,11 +82,13 @@ public class AddYardActivity extends AppCompatActivity {
             String provinceId = provinceIdEd.getText().toString().trim();
             String description = yardDescription.getText().toString().trim();
 
+            // Check for required fields
             if (name.isEmpty() || address.isEmpty() || provinceId.isEmpty() || description.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // Convert provinceId to integer
             int provinceIdValue;
             try {
                 provinceIdValue = Integer.parseInt(provinceId);
@@ -75,6 +97,7 @@ public class AddYardActivity extends AppCompatActivity {
                 return;
             }
 
+            // Get open and close times
             LocalTime openTimeValue = LocalTime.of(openTime.getHour(), openTime.getMinute());
             LocalTime closeTimeValue = LocalTime.of(closeTime.getHour(), closeTime.getMinute());
             int status = 1; // Assuming 1 for active status; adjust based on your use case
@@ -84,12 +107,10 @@ public class AddYardActivity extends AppCompatActivity {
                     name, address, provinceIdValue, description, status, openTimeValue, closeTimeValue, hostId
             );
 
-            Log.d("CON CAC", "" + yardRequestDTO.toString());
+            Log.d("AddYardActivity", "Yard request DTO: " + yardRequestDTO.toString());
 
             // Call ViewModel to create the yard
             courtManagementViewModel.createYard(yardRequestDTO);
         });
     }
 }
-
-
