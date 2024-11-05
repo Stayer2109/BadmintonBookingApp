@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.user.order.OrderFragment">
 
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/orderRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="This is order framgent" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

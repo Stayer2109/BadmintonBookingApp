@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,6 +19,8 @@ import com.example.badmintonbookingapp.R;
 import com.example.badmintonbookingapp.dto.TelephonesDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
 import com.example.badmintonbookingapp.repository.AuthRepository;
+import com.example.badmintonbookingapp.ui.user.booking.BookingActivity;
+import com.example.badmintonbookingapp.ui.user.order.OrderFragment;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
 public class YardDetailActivity extends AppCompatActivity {
@@ -30,6 +33,7 @@ public class YardDetailActivity extends AppCompatActivity {
     private TextView openingHours;
     private TextView status;
     private LinearLayout contactContainer; // Container for multiple phone numbers
+    private static final int BOOKING_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +79,15 @@ public class YardDetailActivity extends AppCompatActivity {
         // Initialize the Book Court button and set its click listener
         Button bookCourtButton = findViewById(R.id.bookCourtButton);
         bookCourtButton.setOnClickListener(v -> {
-            // Handle the booking action here, such as opening a new booking activity or showing a dialog
-            Toast.makeText(this, "Book Court clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, BookingActivity.class);
+            intent.putExtra("yardId", yardId);
+            if (yardDetailViewModel.getYardDetail().getValue() != null) {
+                intent.putExtra("yardName", yardDetailViewModel.getYardDetail().getValue().getName());
+            } else {
+                Toast.makeText(this, "Yard details not loaded yet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            startActivity(intent);
         });
     }
 

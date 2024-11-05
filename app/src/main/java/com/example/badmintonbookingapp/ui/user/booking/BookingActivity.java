@@ -11,12 +11,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.badmintonbookingapp.MainActivity;
 import com.example.badmintonbookingapp.R;
 import com.example.badmintonbookingapp.adapter.SlotAdapter;
 import com.example.badmintonbookingapp.dto.response.SlotResponseDTO;
 import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.repository.BookingRepository;
 import com.example.badmintonbookingapp.repository.SlotRepository;
+import com.example.badmintonbookingapp.ui.user.order.OrderFragment;
+import com.example.badmintonbookingapp.ui.user.order.SharedBookingViewModel;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
 import java.time.LocalDate;
@@ -30,6 +33,7 @@ public class BookingActivity extends AppCompatActivity {
     private SlotAdapter slotAdapter;
     private int yardId;
     private int selectedSlotId;
+    private SharedBookingViewModel sharedViewModel;
 
 
     @Override
@@ -71,18 +75,24 @@ public class BookingActivity extends AppCompatActivity {
             }
         });
 
+        sharedViewModel = new ViewModelProvider(this).get(SharedBookingViewModel.class);
+
+
+        // In the booking creation observer:
         bookingViewModel.getBookingCreationStatus().observe(this, created -> {
             if (created) {
                 Toast.makeText(this, "Booking successful!", Toast.LENGTH_SHORT).show();
+
+                // Trigger the refresh in OrderFragment using the Shared ViewModel
+                sharedViewModel.setBookingConfirmed(true);
+
                 finish();
             } else {
                 Toast.makeText(this, "Booking failed.", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
-
-
-
 
     private List<SlotResponseDTO> createFakeSlotData() {
         List<SlotResponseDTO> slots = new ArrayList<>();
