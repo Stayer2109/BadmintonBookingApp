@@ -222,6 +222,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+
     <Button
         android:id="@+id/updateButton"
         android:layout_width="wrap_content"
@@ -234,10 +235,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.103"
+        app:layout_constraintHorizontal_bias="0.446"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionCard"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <Button
         android:id="@+id/deleteButton"
@@ -251,9 +252,26 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/descriptionCard"
-        app:layout_constraintVertical_bias="0.014" />
+        app:layout_constraintVertical_bias="0.007" />
+
+    <Button
+        android:id="@+id/btn_add_slot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/primary_blue_400"
+        android:text="Add Slot"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionCard"
+        app:layout_constraintVertical_bias="0.007" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
