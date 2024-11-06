@@ -5,7 +5,9 @@ import com.example.badmintonbookingapp.dto.request.SlotRequestDTO;
 import com.example.badmintonbookingapp.dto.response.SlotResponseDTO;
 import com.example.badmintonbookingapp.network.SlotService;
 import com.example.badmintonbookingapp.utils.TokenManager;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,8 +26,21 @@ public class SlotRepository {
     }
 
     public void getSlotsByYardId(int yardId, Callback<List<SlotResponseDTO>> callback) {
-        Call<List<SlotResponseDTO>> call = slotService.getSlotsByYardId(yardId);
-        call.enqueue(callback);
+        slotService.getSlotsByYardId(yardId).enqueue(new Callback<List<SlotResponseDTO>>() {
+            @Override
+            public void onResponse(Call<List<SlotResponseDTO>> call, Response<List<SlotResponseDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResponse(call, Response.success(response.body()));
+                } else {
+                    callback.onFailure(call, new Throwable("Failed to fetch slots by yard id " + yardId));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SlotResponseDTO>> call, Throwable t) {
+                callback.onFailure(call, t);
+            }
+        });
     }
 
     public void createNewSlot(int yardId, SlotRequestDTO slotRequestDTO, Callback<Object> callback) {
@@ -33,7 +48,7 @@ public class SlotRepository {
         call.enqueue(callback);
     }
 
-    public void updateSlot(int slotId, SlotRequestDTO slotRequestDTO, Callback<SlotRequestDTO> callback){
+    public void updateSlot(int slotId, SlotRequestDTO slotRequestDTO, Callback<SlotRequestDTO> callback) {
         Call<SlotRequestDTO> call = slotService.updateSlot(slotId, slotRequestDTO);
         call.enqueue(callback);
     }

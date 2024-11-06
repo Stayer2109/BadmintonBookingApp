@@ -23,9 +23,9 @@
         //phong local
         //private static String baseUrl = "http://192.168.1.54:8080";
         //hoang local
-        //private static String baseUrl = "http://192.168.56.1:8080";
+        private static String baseUrl = "http://192.168.56.1:8080";
         //phong local 1
-        private static String baseUrl = "http://192.168.56.2:8080";
+        //private static String baseUrl = "http://192.168.56.2:8080";
 
         // Get Retrofit client with AuthInterceptor added for token handling
         private static Retrofit retrofit;

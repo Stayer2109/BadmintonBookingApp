@@ -3,12 +3,14 @@ package com.example.badmintonbookingapp.ui.not_fragment.court_detail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -48,6 +50,12 @@ public class YardDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yard_detail);
+
+        // Enable the back button in the action bar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         // Initialize UI components
         yardName = findViewById(R.id.yardName);
@@ -147,5 +155,15 @@ public class YardDetailActivity extends AppCompatActivity {
             imageCarousel.setVisibility(View.GONE);
             carouselIndicator.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Finish the activity when the back button is pressed
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
