@@ -3,47 +3,48 @@ package com.example.badmintonbookingapp.ui.not_fragment.court_detail;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.badmintonbookingapp.R;
+import com.example.badmintonbookingapp.adapter.ImageCarouselAdapter;
 import com.example.badmintonbookingapp.dto.TelephonesDTO;
+import com.example.badmintonbookingapp.dto.YardImagesDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
 import com.example.badmintonbookingapp.repository.AuthRepository;
-import com.example.badmintonbookingapp.ui.user.booking.BookingActivity;
-import com.example.badmintonbookingapp.ui.user.order.OrderFragment;
 import com.example.badmintonbookingapp.utils.TokenManager;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class YardDetailActivity extends AppCompatActivity {
     private YardDetailViewModel yardDetailViewModel;
     private int yardId;
+    private ViewPager2 imageCarousel;
+    private TabLayout carouselIndicator;
 
     // UI Components
     private TextView yardName;
     private TextView address;
     private TextView openingHours;
     private TextView status;
-    private LinearLayout contactContainer; // Container for multiple phone numbers
-    private static final int BOOKING_REQUEST_CODE = 1;
+    private LinearLayout contactContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yard_detail);
-
-        // Enable the "up" button on the Action Bar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         // Initialize UI components
         yardName = findViewById(R.id.yardName);
@@ -51,6 +52,8 @@ public class YardDetailActivity extends AppCompatActivity {
         openingHours = findViewById(R.id.openingHours);
         status = findViewById(R.id.status);
         contactContainer = findViewById(R.id.contactContainer);
+        imageCarousel = findViewById(R.id.imageCarousel);
+        carouselIndicator = findViewById(R.id.carouselIndicator);
 
         // Get the yard ID passed from the intent
         yardId = getIntent().getIntExtra("yard_id", 0);
@@ -64,7 +67,7 @@ public class YardDetailActivity extends AppCompatActivity {
 
         // Fetch yard details if yardId is valid
         if (yardId != 0) {
-            yardDetailViewModel.fetchYardDetail(yardId); // Trigger the API call
+            yardDetailViewModel.fetchYardDetail(yardId);
             yardDetailViewModel.getYardDetail().observe(this, yard -> {
                 if (yard != null) {
                     displayYardDetails(yard);
@@ -75,30 +78,6 @@ public class YardDetailActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Invalid yard ID.", Toast.LENGTH_SHORT).show();
         }
-
-        // Initialize the Book Court button and set its click listener
-        Button bookCourtButton = findViewById(R.id.bookCourtButton);
-        bookCourtButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, BookingActivity.class);
-            intent.putExtra("yardId", yardId);
-            if (yardDetailViewModel.getYardDetail().getValue() != null) {
-                intent.putExtra("yardName", yardDetailViewModel.getYardDetail().getValue().getName());
-            } else {
-                Toast.makeText(this, "Yard details not loaded yet", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            startActivity(intent);
-        });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            // Finish the activity and go back to the previous screen
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void displayYardDetails(YardResponseDTO yard) {
@@ -108,30 +87,52 @@ public class YardDetailActivity extends AppCompatActivity {
         status.setText(yard.getStatus() ? "Available" : "Unavailable");
 
         // Set color based on status
-        if (yard.getStatus()) {
-            status.setTextColor(ContextCompat.getColor(this, R.color.green));
-        } else {
-            status.setTextColor(ContextCompat.getColor(this, R.color.red));
-        }
+        status.setTextColor(ContextCompat.getColor(this, yard.getStatus() ? R.color.green : R.color.red));
 
         // Populate multiple contact numbers dynamically
-        contactContainer.removeAllViews(); // Clear any previous views
+        contactContainer.removeAllViews();
         for (TelephonesDTO telephone : yard.getTelephones()) {
-            // Inflate the contact_item.xml for each phone number
             View contactView = getLayoutInflater().inflate(R.layout.contacts_item, contactContainer, false);
-
-            // Set the phone number text
             TextView phoneTextView = contactView.findViewById(R.id.phoneNumber);
             phoneTextView.setText(telephone.getTelephone());
-
-            // Optional: make the phone number clickable to dial
             phoneTextView.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone.getTelephone()));
                 startActivity(intent);
             });
-
-            // Add the inflated contact view to the container
             contactContainer.addView(contactView);
+        }
+
+        // Set up the image carousel
+        List<YardImagesDTO> imageList = yard.getImages();
+        if (imageList != null && !imageList.isEmpty()) {
+            List<String> imageUrls = new ArrayList<>();
+            for (YardImagesDTO image : imageList) {
+                imageUrls.add(image.getImg());
+            }
+
+            ImageCarouselAdapter adapter = new ImageCarouselAdapter(this, imageUrls);
+            imageCarousel.setAdapter(adapter);
+
+            // Set up TabLayout indicator for carousel
+            new TabLayoutMediator(carouselIndicator, imageCarousel, (tab, position) -> {
+                View dot = new View(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(24, 24); // Size for dots
+                params.setMargins(1, 0, 1, 0); // Spacing between dots
+                dot.setLayoutParams(params);
+                dot.setBackgroundResource(R.drawable.tab_dot_selector);
+                tab.setCustomView(dot);
+            }).attach();
+
+            // Adding a composite transformer for zoom-in effect on current item
+            CompositePageTransformer transformer = new CompositePageTransformer();
+            transformer.addTransformer(new MarginPageTransformer(16)); // Set margin between pages
+            transformer.addTransformer((page, position) -> {
+                float scale = 0.8f + (1 - Math.abs(position)) * 0.26f; // Zoom effect
+                page.setScaleY(scale);
+            });
+            imageCarousel.setPageTransformer(transformer);
+        } else {
+            Toast.makeText(this, "No images available", Toast.LENGTH_SHORT).show();
         }
     }
 }
