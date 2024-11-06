@@ -18,11 +18,10 @@ import com.example.badmintonbookingapp.R;
 
 public class AddSlotActivity extends AppCompatActivity {
 
-    private Button btnAddSlot;
+    private Button btnAddSlot, btnAddmoreSlot, btnDeleteSlot;
     private LinearLayout slotContainer;
     private int slotCount = 0;
     private static final int MAX_SLOTS = 12;
-    private ImageView btnAddmoreSlot, btnDeleteSlot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

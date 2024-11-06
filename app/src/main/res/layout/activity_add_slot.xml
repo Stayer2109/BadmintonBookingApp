@@ -31,20 +31,32 @@
         android:orientation="horizontal"
         android:gravity="end">
 
-        <ImageView
+        <Button
             android:id="@+id/btn_add_more_slot"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:contentDescription="Add more slot"
-            android:src="@drawable/ic_add"
-            android:layout_marginEnd="8dp" />
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/primary_blue_400"
+            android:text="Add more Slot"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
-        <ImageView
+        <Button
             android:id="@+id/btn_delete_slot"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_remove"
-            android:contentDescription="Delete slot" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="@color/primary_blue_400"
+            android:text="Remove Slot"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+
     </LinearLayout>
 </LinearLayout>
 
