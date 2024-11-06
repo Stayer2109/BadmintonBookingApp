@@ -3,9 +3,11 @@ package com.example.badmintonbookingapp.ui.court_owner.court_owner_court;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +44,13 @@ public class YardOwnerDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yard_owner_detail);
+
+        Button btnAddSlot = findViewById(R.id.btn_add_slot);
+        btnAddSlot.setOnClickListener(v -> {
+            // Create an Intent to navigate to the Add Slot Activity
+            Intent intent = new Intent(YardOwnerDetail.this, AddSlotActivity.class);
+            startActivity(intent);
+        });
 
         // Enable the "up" button on the Action Bar
         if (getSupportActionBar() != null) {
