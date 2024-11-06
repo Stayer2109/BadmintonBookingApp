@@ -17,7 +17,7 @@
         android:paddingBottom="8dp"
         android:text="Central Yard"
         android:textColor="@color/primary_orange_500"
-        android:textSize="22sp"
+        android:textSize="26sp"
         android:textStyle="bold" />
 
     <!-- Divider Line -->
