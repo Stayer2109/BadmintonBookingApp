@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import com.example.badmintonbookingapp.dto.TelephonesDTO;
 import com.example.badmintonbookingapp.dto.YardImagesDTO;
 import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
 import com.example.badmintonbookingapp.repository.AuthRepository;
+import com.example.badmintonbookingapp.ui.user.booking.BookingActivity;
 import com.example.badmintonbookingapp.utils.TokenManager;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -40,6 +42,7 @@ public class YardDetailActivity extends AppCompatActivity {
     private TextView openingHours;
     private TextView status;
     private LinearLayout contactContainer;
+    private Button bookCourtButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class YardDetailActivity extends AppCompatActivity {
         contactContainer = findViewById(R.id.contactContainer);
         imageCarousel = findViewById(R.id.imageCarousel);
         carouselIndicator = findViewById(R.id.carouselIndicator);
+        bookCourtButton = findViewById(R.id.bookCourtButton);
 
         // Get the yard ID passed from the intent
         yardId = getIntent().getIntExtra("yard_id", 0);
@@ -78,6 +82,13 @@ public class YardDetailActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Invalid yard ID.", Toast.LENGTH_SHORT).show();
         }
+
+        // Button OnClick listener
+        bookCourtButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, BookingActivity.class);
+            intent.putExtra("yard_id", yardId);
+            startActivity(intent);
+        });
     }
 
     private void displayYardDetails(YardResponseDTO yard) {
@@ -132,7 +143,9 @@ public class YardDetailActivity extends AppCompatActivity {
             });
             imageCarousel.setPageTransformer(transformer);
         } else {
-            Toast.makeText(this, "No images available", Toast.LENGTH_SHORT).show();
+            // Hide the carousel if there are no images
+            imageCarousel.setVisibility(View.GONE);
+            carouselIndicator.setVisibility(View.GONE);
         }
     }
 }
