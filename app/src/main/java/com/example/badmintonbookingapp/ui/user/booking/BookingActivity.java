@@ -1,6 +1,8 @@
 package com.example.badmintonbookingapp.ui.user.booking;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -52,13 +54,11 @@ public class BookingActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerViewSlots);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<SlotResponseDTO> fakeSlots = createFakeSlotData();
         slotAdapter = new SlotAdapter(slot -> {
             selectedSlotId = slot.getId();
             Toast.makeText(this, "Selected slot: " + selectedSlotId, Toast.LENGTH_SHORT).show();
         });
         recyclerView.setAdapter(slotAdapter);
-        slotAdapter.setSlots(fakeSlots);
 
         TokenManager tokenManager = TokenManager.getInstance(getApplicationContext());
         AuthRepository authRepository = new AuthRepository(tokenManager);
@@ -66,25 +66,37 @@ public class BookingActivity extends AppCompatActivity {
         BookingRepository bookingRepository = new BookingRepository(this, tokenManager, authRepository);
         bookingViewModel = new ViewModelProvider(this, new BookingViewModelFactory(bookingRepository, slotRepository)).get(BookingViewModel.class);
 
+        // Fetch slots from the API
+        bookingViewModel.getSlotsByYardId(yardId); // Call this to fetch real data
+
+
+        bookingViewModel.getSlots().observe(this, slots -> {
+            if (slots != null) {
+                slotAdapter.setSlots(slots); // Update the adapter with real data
+            } else {
+                Toast.makeText(this, "Failed to load slots.", Toast.LENGTH_SHORT).show(); // Handle error
+            }
+
+        });
+
         Button confirmBookingButton = findViewById(R.id.confirmBookingButton);
         confirmBookingButton.setOnClickListener(v -> {
             if (selectedSlotId != 0) {
-                bookingViewModel.createBooking(yardId, selectedSlotId, 123); // Replace 123
+                bookingViewModel.createBooking(yardId, selectedSlotId, getCurrentUserId());
             } else {
                 Toast.makeText(this, "Please select a slot.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        sharedViewModel = new ViewModelProvider(this).get(SharedBookingViewModel.class);
 
-
-        // In the booking creation observer:
         bookingViewModel.getBookingCreationStatus().observe(this, created -> {
             if (created) {
                 Toast.makeText(this, "Booking successful!", Toast.LENGTH_SHORT).show();
 
-                // Trigger the refresh in OrderFragment using the Shared ViewModel
-                sharedViewModel.setBookingConfirmed(true);
+
+                sharedViewModel.setBookingConfirmed(true); // Notify OrderFragment
+
+
 
                 finish();
             } else {
@@ -94,23 +106,11 @@ public class BookingActivity extends AppCompatActivity {
 
     }
 
-    private List<SlotResponseDTO> createFakeSlotData() {
-        List<SlotResponseDTO> slots = new ArrayList<>();
-        for (int i = 9; i <= 21; i++) {
-            SlotResponseDTO slot = new SlotResponseDTO();
-            slot.setId(i);
-            slot.setStartTime(LocalTime.of(i, 0));
-            slot.setEndTime(LocalTime.of(i + 1, 0));
-            slot.setPrice(15.0 + i * 0.5);
-            slot.setStatus("Available");
-            // ... add other fields if necessary ...
-            slot.setCreateDate(LocalDate.now());
-            slot.setUpdateDate(LocalDate.now());
 
-            slots.add(slot);
+    private int getCurrentUserId(){
+        SharedPreferences sharedPreferences = this.getSharedPreferences("user_data", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("user_id", 0);
 
-        }
-        return slots;
     }
 
 }

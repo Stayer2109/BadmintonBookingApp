@@ -47,18 +47,27 @@ public class SlotAdapter extends RecyclerView.Adapter<SlotAdapter.SlotViewHolder
     public void onBindViewHolder(@NonNull SlotViewHolder holder, int position) {
         SlotResponseDTO slot = slots.get(position);
 
+        if (slot != null) { // Check if slot is null
+            if (slot.getStartTime() != null && slot.getEndTime() != null) { // Check startTime and endTime
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                String startTime = slot.getStartTime().format(timeFormatter);  // Assuming LocalTime
+                String endTime = slot.getEndTime().format(timeFormatter);    // Assuming LocalTime
+                holder.slotTime.setText(String.format("%s - %s", startTime, endTime));
+            } else {
+                holder.slotTime.setText("Time not available"); // Handle null time values
+            }
 
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        String startTime = slot.getStartTime().format(timeFormatter);
-        String endTime = slot.getEndTime().format(timeFormatter);
-        holder.slotTime.setText(String.format("%s - %s", startTime, endTime));
-        holder.slotPrice.setText(String.format("%.2f", slot.getPrice()));
-        holder.slotStatus.setText(slot.getStatus());
+            holder.slotPrice.setText(slot.getPrice() != null ? String.format("%.2f", slot.getPrice()) : "Price not available"); // Handle null price
+
+            holder.slotStatus.setText(slot.getStatus() != null ? slot.getStatus() : "Status not available"); // Handle null status
 
 
-
-        holder.itemView.setOnClickListener(v -> listener.onSlotClick(slot));
-
+            holder.itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onSlotClick(slot);
+                }
+            });
+        }
     }
 
     @Override
