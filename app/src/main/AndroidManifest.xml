@@ -28,6 +28,9 @@
             android:name=".ui.court_owner.court_owner_court.AddYardActivity"
             android:exported="false"/>
         <activity
+            android:name=".ui.user.booking.BookingActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ui.auth.AuthActivity"
             android:exported="true">
             <intent-filter>

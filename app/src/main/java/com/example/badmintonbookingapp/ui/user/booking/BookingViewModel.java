@@ -34,8 +34,6 @@ public class BookingViewModel extends ViewModel {
     private final MutableLiveData<String> bookingUpdateStatus = new MutableLiveData<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-
-
     public BookingViewModel(BookingRepository bookingRepository, SlotRepository slotRepository) {
         this.bookingRepository = bookingRepository;
         this.slotRepository = slotRepository;
@@ -57,8 +55,6 @@ public class BookingViewModel extends ViewModel {
     public LiveData<String> getBookingUpdateStatus() {
         return bookingUpdateStatus;
     }
-
-
 
     public void fetchBookingOrdersByUserId(int userId) {
         executorService.execute(() -> {
@@ -83,7 +79,6 @@ public class BookingViewModel extends ViewModel {
 
         });
     }
-
 
     public void createBooking(int yardId, int slotId, int userId) {
         executorService.execute(() -> {
@@ -129,8 +124,6 @@ public class BookingViewModel extends ViewModel {
             }
         });
     }
-
-
 
     public void updateBookingOrderStatus(int bookingId) {
         executorService.execute(() -> {

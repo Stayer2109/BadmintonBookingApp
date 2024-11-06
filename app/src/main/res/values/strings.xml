@@ -24,4 +24,10 @@
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
 
     <string name="account_information">Account Information</string>
+    <string name="time_icon_desc">Time Icon\n</string>
+    <string name="address_icon_desc">Location</string>
+    <string name="status_icon_desc">Status\n==</string>
+    <string name="contact_icon_desc">Contacts</string>
+    <string name="yard_image_desc">Yard Image Description</string>
+    <string name="image_desc">Image Description</string>
 </resources>

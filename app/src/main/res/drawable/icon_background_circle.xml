@@ -1,0 +1,6 @@
+<!-- res/drawable/icon_background_circle.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#f0f0f0" />
+    <corners android:radius="12dp" /> <!-- Adjust this value if you need a larger or smaller radius -->
+    <size android:width="24dp" android:height="24dp" /> <!-- Set the size to create a circle -->
+</shape>

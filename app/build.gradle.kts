@@ -36,6 +36,8 @@ android {
 
 dependencies {
 
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
     implementation(libs.gson)
     implementation(libs.jackson.annotations)
     implementation(libs.appcompat)

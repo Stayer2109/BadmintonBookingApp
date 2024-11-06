@@ -59,26 +59,26 @@ public class TokenManager {
             return null;
         }
     }
-
-    public Integer getId() {
-        String accessToken = getAccessToken();
-        if (accessToken == null) return null;
-
-        try {
-            String[] parts = accessToken.split("\\.");
-            if (parts.length < 2) return null;
-
-            // Decode payload
-            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
-            JSONObject jsonObject = new JSONObject(payload);
-
-            // Extract "id" filed from JSON payload
-            return jsonObject.optInt("id", -1);
-        } catch (JSONException | IllegalArgumentException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+//
+//    public Integer getId() {
+//        String accessToken = getAccessToken();
+//        if (accessToken == null) return null;
+//
+//        try {
+//            String[] parts = accessToken.split("\\.");
+//            if (parts.length < 2) return null;
+//
+//            // Decode payload
+//            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+//            JSONObject jsonObject = new JSONObject(payload);
+//
+//            // Extract "id" filed from JSON payload
+//            return jsonObject.optInt("id", -1);
+//        } catch (JSONException | IllegalArgumentException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     public String getRefreshToken() {
         return prefs.getString(KEY_REFRESH_TOKEN, null);
