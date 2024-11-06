@@ -50,9 +50,8 @@ public class AuthRepository {
         });
     }
 
-    public String refreshToken() {
-        /*SignInRequest signInRequest = new SignInRequest(username, password);
-        authService.refreshToken(signInRequest).enqueue(new Callback<JwtAuthenticationResponse>() {
+    public String refreshToken(final ApiCallback<JwtAuthenticationResponse> callback) {
+        authService.refreshToken().enqueue(new Callback<JwtAuthenticationResponse>() {
             @Override
             public void onResponse(Call<JwtAuthenticationResponse> call, Response<JwtAuthenticationResponse> response) {
                 if (response.isSuccessful()) {
@@ -67,27 +66,27 @@ public class AuthRepository {
             public void onFailure(Call<JwtAuthenticationResponse> call, Throwable t) {
                 callback.onError(t);
             }
-        });*/
+        });
         return null;
     }
 
     public void getAccount (final ApiCallback<UserResponseDTO> callback) {
-        authService.getAccount().enqueue(new Callback<ApiResponse<JsonObject>>() {
+        authService.getAccount().enqueue(new Callback<UserResponseDTO>() {
             @Override
-            public void onResponse(Call<ApiResponse<JsonObject>> call, Response<ApiResponse<JsonObject>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    UserResponseDTO userResponseDTO = new UserResponseDTO();
+            public void onResponse(Call<UserResponseDTO> call, Response<UserResponseDTO> response) {
+                if (response.isSuccessful()) {
+                    //UserResponseDTO userResponseDTO = new UserResponseDTO();
                     /*userResponseDTO.setEmail(response.body().getData().get("email").getAsString());
                     userResponseDTO.setFirstName(response.body().getData().get("first_name").getAsString());
                     userResponseDTO.setLastName(response.body().getData().get("last_name").getAsString());*/
-                    callback.onSuccess(userResponseDTO);
+                    callback.onSuccess(response.body());
                 } else {
-                    callback.onError(new Throwable("Error: " + response.message()));
+                    callback.onError(new Throwable("Error: " + response.errorBody()));
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<JsonObject>> call, Throwable t) {
+            public void onFailure(Call<UserResponseDTO> call, Throwable t) {
                 callback.onError(t);
             }
         });

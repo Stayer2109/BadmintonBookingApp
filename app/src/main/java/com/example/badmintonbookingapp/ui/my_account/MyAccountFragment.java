@@ -68,16 +68,20 @@ public class MyAccountFragment extends Fragment {
         authViewModel.getAccountInfo().observe(getViewLifecycleOwner(), userResponseDTO -> {
             if (userResponseDTO != null) {
                 tvUsername.setText(userResponseDTO.getUsername());
-                //tvEmail.setText(userResponseDTO.getEmail());
-                //tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
+                tvEmail.setText(userResponseDTO.getEmail());
+                tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
 
-                /*// Set gender
-                tvGender.setText(userResponseDTO.getGender() ? "male" : "female");
+                // Set gender
+                if(userResponseDTO.getGender() != null) tvGender.setText(userResponseDTO.getGender() ? "male" : "female");
+                else tvGender.setText("unknown");
 
                 // Format and display date of birth
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                String dob = formatter.format(userResponseDTO.getDob());
-                tvDob.setText(dob);*/
+                if (userResponseDTO.getDob() != null){
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                    String dob = formatter.format(userResponseDTO.getDob());
+                    tvDob.setText(dob);
+                }
+                else tvDob.setText("unknown");
             }
 
         });

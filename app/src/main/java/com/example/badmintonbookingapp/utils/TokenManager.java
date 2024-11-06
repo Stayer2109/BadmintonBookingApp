@@ -36,7 +36,8 @@ public class TokenManager {
     }
 
     public String getAccessToken() {
-        return prefs.getString(KEY_ACCESS_TOKEN, null);
+        String accessToken = prefs.getString(KEY_ACCESS_TOKEN, null);
+        return accessToken;
     }
 
     public String getRole() {
@@ -59,26 +60,26 @@ public class TokenManager {
             return null;
         }
     }
-//
-//    public Integer getId() {
-//        String accessToken = getAccessToken();
-//        if (accessToken == null) return null;
-//
-//        try {
-//            String[] parts = accessToken.split("\\.");
-//            if (parts.length < 2) return null;
-//
-//            // Decode payload
-//            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
-//            JSONObject jsonObject = new JSONObject(payload);
-//
-//            // Extract "id" filed from JSON payload
-//            return jsonObject.optInt("id", -1);
-//        } catch (JSONException | IllegalArgumentException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+
+    public Integer getId() {
+        String accessToken = getAccessToken();
+        if (accessToken == null) return null;
+
+        try {
+            String[] parts = accessToken.split("\\.");
+            if (parts.length < 2) return null;
+
+            // Decode payload
+            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
+            JSONObject jsonObject = new JSONObject(payload);
+
+            // Extract "id" filed from JSON payload
+            return jsonObject.optInt("id", -1);
+        } catch (JSONException | IllegalArgumentException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public String getRefreshToken() {
         return prefs.getString(KEY_REFRESH_TOKEN, null);
@@ -104,27 +105,6 @@ public class TokenManager {
         } catch (JSONException | IllegalArgumentException e) {
             e.printStackTrace();
             return true;
-        }
-    }
-
-    public int getId (){
-        String accessToken = getAccessToken();
-        if (accessToken == null) return -1;
-
-        try {
-            // Split the JWT into its parts and decode the payload
-            String[] parts = accessToken.split("\\.");
-            if (parts.length < 2) return -1;
-
-            // Decode payload (second part of JWT) from Base64
-            String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE));
-            JSONObject jsonObject = new JSONObject(payload);
-
-            // Extract "id" field from JSON payload
-            return jsonObject.optInt("id", -1);
-        } catch (JSONException | IllegalArgumentException e) {
-            e.printStackTrace();
-            return -1;
         }
     }
 

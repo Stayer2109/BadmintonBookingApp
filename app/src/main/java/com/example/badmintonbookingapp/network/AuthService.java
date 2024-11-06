@@ -29,5 +29,5 @@ public interface AuthService {
      Call<Void> logOut();
 
      @GET(requestMapping + "/account")
-     Call<ApiResponse<JsonObject>> getAccount();
+     Call<UserResponseDTO> getAccount();
 }

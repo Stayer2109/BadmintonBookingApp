@@ -14,6 +14,8 @@ import com.example.badmintonbookingapp.network.ApiCallback;
 import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
+import java.util.logging.Logger;
+
 public class AuthViewModel extends AndroidViewModel {
     private AuthRepository authRepository;
     private MutableLiveData<JwtAuthenticationResponse> signInResponse = new MutableLiveData<>();
