@@ -3,10 +3,8 @@ package com.example.badmintonbookingapp.network;
 import com.example.badmintonbookingapp.dto.ApiResponse;
 import com.example.badmintonbookingapp.dto.request.SignInRequest;
 import com.example.badmintonbookingapp.dto.request.SignUpRequest;
-import com.example.badmintonbookingapp.dto.response.JwtAuthenticationResponse;
+import com.example.badmintonbookingapp.dto.response.AuthResponse;
 import com.example.badmintonbookingapp.dto.response.UserResponseDTO;
-import com.example.badmintonbookingapp.dto.response.wrapper.UserResponseWrapper;
-import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,17 +15,8 @@ public interface AuthService {
      String requestMapping = "/api/v1/auth";
 
      @POST(requestMapping + "/signin")
-     Call<JwtAuthenticationResponse> signIn(@Body SignInRequest loginRequestDTO);
-
-     @POST(requestMapping + "/refresh")
-     Call<JwtAuthenticationResponse> refreshToken();
+     Call<ApiResponse<AuthResponse>> signIn(@Body SignInRequest loginRequestDTO);
 
      @POST(requestMapping + "/signup")
-     Call<JwtAuthenticationResponse> signUp(@Body SignUpRequest signUpRequestDTO);
-
-     @POST(requestMapping + "/logout")
-     Call<Void> logOut();
-
-     @GET(requestMapping + "/account")
-     Call<UserResponseDTO> getAccount();
+     Call<ApiResponse<AuthResponse>> signUp(@Body SignUpRequest signUpRequestDTO);
 }

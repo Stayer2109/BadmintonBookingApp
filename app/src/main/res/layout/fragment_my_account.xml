@@ -34,28 +34,28 @@
                 android:id="@+id/llMainContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp">
+                android:orientation="vertical">
 
                 <TextView
                     style="@style/headerText"
                     android:layout_gravity="center"
-                    android:text="@string/account_information"
-                    android:layout_marginTop="40dp"/>
+                    android:layout_marginTop="40dp"
+                    android:text="@string/account_information" />
 
                 <include layout="@layout/layout_my_account" />
             </LinearLayout>
 
             <!-- Close Icon at Top Left -->
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="10dp"
-                android:src="@android:drawable/ic_menu_revert" />
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:src="@android:drawable/ic_menu_revert" />-->
         </RelativeLayout>
     </ScrollView>
 </FrameLayout>

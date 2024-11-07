@@ -1,26 +1,61 @@
 package com.example.badmintonbookingapp.dto;
 
 public class ApiResponse<T> {
-    private Integer status;
-    private Integer code;
-    private String message;
     private T data;
-    private String error;
+    private String additionalData;
+    private String message;
+    private int statusCode;
+    private String code;
 
-    // Getters and Setters
-    public Integer getStatus() { return status; }
-    public void setStatus(Integer status) { this.status = status; }
+    public ApiResponse() {
+    }
 
-    public Integer getCode() { return code; }
-    public void setCode(Integer code) { this.code = code; }
+    public ApiResponse(T data, String additionalData, String message, int statusCode, String code) {
+        this.data = data;
+        this.additionalData = additionalData;
+        this.message = message;
+        this.statusCode = statusCode;
+        this.code = code;
+    }
 
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
+    public T getData() {
+        return data;
+    }
 
-    public T getData() { return data; }
-    public void setData(T data) { this.data = data; }
+    public void setData(T data) {
+        this.data = data;
+    }
 
-    public String getError() { return error; }
-    public void setError(String error) { this.error = error; }
+    public String getAdditionalData() {
+        return additionalData;
+    }
+
+    public void setAdditionalData(String additionalData) {
+        this.additionalData = additionalData;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }
 

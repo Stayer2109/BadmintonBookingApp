@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.badmintonbookingapp.MainActivity;
 import com.example.badmintonbookingapp.R;
 import com.example.badmintonbookingapp.dto.request.SignUpRequest;
-import com.example.badmintonbookingapp.dto.response.JwtAuthenticationResponse;
+import com.example.badmintonbookingapp.dto.response.AuthResponse;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -67,10 +66,10 @@ public class AuthActivity extends AppCompatActivity {
         cardLogin.setVisibility(View.GONE);
         cardRegister.setVisibility(View.VISIBLE);
         tvLogin = findViewById(R.id.tvLogin);
-        etFirstName = findViewById(R.id.etFirstName);
-        etLastName = findViewById(R.id.etLastName);
+//        etFirstName = findViewById(R.id.etFirstName);
+//        etLastName = findViewById(R.id.etLastName);
+//        etEmail = findViewById(R.id.etEmail);
         etUsername = findViewById(R.id.etRegisterUsername);
-        etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etRegisterPassword);
         btnRegister = findViewById(R.id.btnRegister);
         rbUser = findViewById(R.id.rbUser);
@@ -108,9 +107,9 @@ public class AuthActivity extends AppCompatActivity {
 
     // Set up LiveData observers for sign-in response and error handling
     private void setupSignInObservers() {
-        authViewModel.getSignInResponse().observe(this, new Observer<JwtAuthenticationResponse>() {
+        authViewModel.getSignInResponse().observe(this, new Observer<AuthResponse>() {
             @Override
-            public void onChanged(JwtAuthenticationResponse response) {
+            public void onChanged(AuthResponse response) {
                 if (response != null) {
                     checkUser();
                 }
@@ -139,9 +138,9 @@ public class AuthActivity extends AppCompatActivity {
 
     // Method to handle register button click
     private void Register() {
-        String firstName = etFirstName.getText().toString().trim();
-        String lastName = etLastName.getText().toString().trim();
-        String email = etEmail.getText().toString().trim();
+//        String firstName = etFirstName.getText().toString().trim();
+//        String lastName = etLastName.getText().toString().trim();
+//        String email = etEmail.getText().toString().trim();
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         role = new AtomicInteger(0);
@@ -154,14 +153,15 @@ public class AuthActivity extends AppCompatActivity {
             return;
         }
 
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {
+        if (/*firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||*/ username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Call ViewModel to initiate register process
-        SignUpRequest signUpRequest = new SignUpRequest(firstName, lastName, email, password, username, role.get());
+        SignUpRequest signUpRequest = new SignUpRequest(password, username, role.get());
         authViewModel.register(signUpRequest);
         setupSignInObservers();
+        LoginMapping();
     }
 }

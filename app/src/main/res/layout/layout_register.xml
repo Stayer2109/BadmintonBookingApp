@@ -21,44 +21,44 @@
             android:text="@string/register"
             android:layout_marginTop="@dimen/loginViewsMargin"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
-            <EditText
-                android:id="@+id/etFirstName"
-                style="@style/modifiedEditText"
-                android:inputType="text"
-                android:maxLines="1"
-                android:drawableLeft="@drawable/baseline_abc_24"
-                android:drawablePadding="@dimen/textview_margin"
-                android:hint="First Name"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/parent"-->
+<!--            android:layout_marginTop="@dimen/signup_text_margin_top">-->
+<!--            <EditText-->
+<!--                android:id="@+id/etFirstName"-->
+<!--                style="@style/modifiedEditText"-->
+<!--                android:inputType="text"-->
+<!--                android:maxLines="1"-->
+<!--                android:drawableLeft="@drawable/baseline_abc_24"-->
+<!--                android:drawablePadding="@dimen/textview_margin"-->
+<!--                android:hint="First Name"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
-            <EditText
-                android:id="@+id/etLastName"
-                style="@style/modifiedEditText"
-                android:inputType="text"
-                android:maxLines="1"
-                android:drawableLeft="@drawable/baseline_abc_24"
-                android:drawablePadding="@dimen/textview_margin"
-                android:hint="Last Name"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/parent"-->
+<!--            android:layout_marginTop="@dimen/signup_text_margin_top">-->
+<!--            <EditText-->
+<!--                android:id="@+id/etLastName"-->
+<!--                style="@style/modifiedEditText"-->
+<!--                android:inputType="text"-->
+<!--                android:maxLines="1"-->
+<!--                android:drawableLeft="@drawable/baseline_abc_24"-->
+<!--                android:drawablePadding="@dimen/textview_margin"-->
+<!--                android:hint="Last Name"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/parent"
-            android:layout_marginTop="@dimen/signup_text_margin_top">
-            <EditText
-                android:id="@+id/etEmail"
-                style="@style/modifiedEditText"
-                android:maxLines="1"
-                android:drawableLeft="@drawable/baseline_email_24"
-                android:drawablePadding="@dimen/textview_margin"
-                android:inputType="textEmailAddress"
-                android:hint="Email"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            style="@style/parent"-->
+<!--            android:layout_marginTop="@dimen/signup_text_margin_top">-->
+<!--            <EditText-->
+<!--                android:id="@+id/etEmail"-->
+<!--                style="@style/modifiedEditText"-->
+<!--                android:maxLines="1"-->
+<!--                android:drawableLeft="@drawable/baseline_email_24"-->
+<!--                android:drawablePadding="@dimen/textview_margin"-->
+<!--                android:inputType="textEmailAddress"-->
+<!--                android:hint="Email"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/parent"

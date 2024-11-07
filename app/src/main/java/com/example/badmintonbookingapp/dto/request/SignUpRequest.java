@@ -1,26 +1,20 @@
 package com.example.badmintonbookingapp.dto.request;
 
 public class SignUpRequest {
-    private String firstName;
-    private String lastName;
-    private String email;
     private String password;
     private String username;
-    private Integer roleId;
+    private int role;
 
     public SignUpRequest() {
     }
 
-    public SignUpRequest(String firstName, String lastName, String email, String password, String username, Integer roleId) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public SignUpRequest(String password, String username, int role) {
         this.password = password;
         this.username = username;
-        this.roleId = roleId;
+        this.role = role;
     }
 
-    public String getFirstName() {
+    /*public String getFirstName() {
         return firstName;
     }
 
@@ -42,7 +36,7 @@ public class SignUpRequest {
 
     public void setEmail(String email) {
         this.email = email;
-    }
+    }*/
 
     public String getPassword() {
         return password;
@@ -60,11 +54,11 @@ public class SignUpRequest {
         this.username = username;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public int getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }

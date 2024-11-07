@@ -37,7 +37,7 @@
                 <TextView
                     style="@style/textviewTitle"
                     android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:text="Name" />
+                    android:text="Id" />
                 <TextView
                     style="@style/textviewTitle"
                     android:layout_marginTop="@dimen/loginViewsMargin"
@@ -45,15 +45,15 @@
                 <TextView
                     style="@style/textviewTitle"
                     android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:text="Email" />
-                <TextView
-                    style="@style/textviewTitle"
-                    android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:text="Gender" />
-                <TextView
-                    style="@style/textviewTitle"
-                    android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:text="Dob" />
+                    android:text="Role" />
+<!--                <TextView-->
+<!--                    style="@style/textviewTitle"-->
+<!--                    android:layout_marginTop="@dimen/loginViewsMargin"-->
+<!--                    android:text="Gender" />-->
+<!--                <TextView-->
+<!--                    style="@style/textviewTitle"-->
+<!--                    android:layout_marginTop="@dimen/loginViewsMargin"-->
+<!--                    android:text="Dob" />-->
             </LinearLayout>
 
             <LinearLayout
@@ -65,7 +65,7 @@
                     android:id="@+id/tvName"
                     style="@style/parent"
                     android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:text="Tran Dinh Minh Quang" />
+                    android:text="0" />
                 <TextView
                     android:id="@+id/tvUsername"
                     style="@style/parent"
@@ -76,16 +76,16 @@
                     style="@style/parent"
                     android:layout_marginTop="@dimen/loginViewsMargin"
                     android:text="Email" />
-                <TextView
-                    android:id="@+id/tvGender"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:text="Gender" />
-                <TextView
-                    android:id="@+id/tvDob"
-                    style="@style/parent"
-                    android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:text="Dob" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tvGender"-->
+<!--                    style="@style/parent"-->
+<!--                    android:layout_marginTop="@dimen/loginViewsMargin"-->
+<!--                    android:text="Gender" />-->
+<!--                <TextView-->
+<!--                    android:id="@+id/tvDob"-->
+<!--                    style="@style/parent"-->
+<!--                    android:layout_marginTop="@dimen/loginViewsMargin"-->
+<!--                    android:text="Dob" />-->
             </LinearLayout>
         </LinearLayout>
 

@@ -4,13 +4,11 @@ import com.example.badmintonbookingapp.client.APIClient;
 import com.example.badmintonbookingapp.dto.ApiResponse;
 import com.example.badmintonbookingapp.dto.request.SignInRequest;
 import com.example.badmintonbookingapp.dto.request.SignUpRequest;
-import com.example.badmintonbookingapp.dto.response.JwtAuthenticationResponse;
+import com.example.badmintonbookingapp.dto.response.AuthResponse;
 import com.example.badmintonbookingapp.dto.response.UserResponseDTO;
-import com.example.badmintonbookingapp.dto.response.wrapper.UserResponseWrapper;
 import com.example.badmintonbookingapp.network.ApiCallback;
 import com.example.badmintonbookingapp.network.AuthService;
 import com.example.badmintonbookingapp.utils.TokenManager;
-import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,104 +28,46 @@ public class AuthRepository {
         this.tokenManager = tokenManager;
     }
 
-    public void signIn(String username, String password, final ApiCallback<JwtAuthenticationResponse> callback) {
+    public void signIn(String username, String password, final ApiCallback<AuthResponse> callback) {
         SignInRequest signInRequest = new SignInRequest(username, password);
-        authService.signIn(signInRequest).enqueue(new Callback<JwtAuthenticationResponse>() {
+        authService.signIn(signInRequest).enqueue(new Callback<ApiResponse<AuthResponse>>() {
             @Override
-            public void onResponse(Call<JwtAuthenticationResponse> call, Response<JwtAuthenticationResponse> response) {
+            public void onResponse(Call<ApiResponse<AuthResponse>> call, Response<ApiResponse<AuthResponse>> response) {
                 if (response.isSuccessful()) {
-                    tokenManager.saveTokens(response.body().getToken(), response.body().getRefreshToken());
-                    callback.onSuccess(response.body());
+                    tokenManager.saveTokens(response.body().getData().getToken());
+                    callback.onSuccess(response.body().getData());
                 } else {
                     callback.onError(new Throwable("Error: " + response.message()));
                 }
             }
 
             @Override
-            public void onFailure(Call<JwtAuthenticationResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<AuthResponse>> call, Throwable t) {
                 callback.onError(t);
             }
         });
     }
 
-    public String refreshToken(final ApiCallback<JwtAuthenticationResponse> callback) {
-        authService.refreshToken().enqueue(new Callback<JwtAuthenticationResponse>() {
+    public void register(SignUpRequest request, ApiCallback<AuthResponse> apiCallback) {
+        authService.signUp(request).enqueue(new Callback<ApiResponse<AuthResponse>>() {
             @Override
-            public void onResponse(Call<JwtAuthenticationResponse> call, Response<JwtAuthenticationResponse> response) {
+            public void onResponse(Call<ApiResponse<AuthResponse>> call, Response<ApiResponse<AuthResponse>> response) {
                 if (response.isSuccessful()) {
-                    tokenManager.saveTokens(response.body().getToken(), response.body().getRefreshToken());
-                    callback.onSuccess(response.body());
-                } else {
-                    callback.onError(new Throwable("Error: " + response.message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JwtAuthenticationResponse> call, Throwable t) {
-                callback.onError(t);
-            }
-        });
-        return null;
-    }
-
-    public void getAccount (final ApiCallback<UserResponseDTO> callback) {
-        authService.getAccount().enqueue(new Callback<UserResponseDTO>() {
-            @Override
-            public void onResponse(Call<UserResponseDTO> call, Response<UserResponseDTO> response) {
-                if (response.isSuccessful()) {
-                    //UserResponseDTO userResponseDTO = new UserResponseDTO();
-                    /*userResponseDTO.setEmail(response.body().getData().get("email").getAsString());
-                    userResponseDTO.setFirstName(response.body().getData().get("first_name").getAsString());
-                    userResponseDTO.setLastName(response.body().getData().get("last_name").getAsString());*/
-                    callback.onSuccess(response.body());
-                } else {
-                    callback.onError(new Throwable("Error: " + response.errorBody()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserResponseDTO> call, Throwable t) {
-                callback.onError(t);
-            }
-        });
-    }
-
-    public void register(SignUpRequest request, ApiCallback<JwtAuthenticationResponse> apiCallback) {
-        authService.signUp(request).enqueue(new Callback<JwtAuthenticationResponse>() {
-            @Override
-            public void onResponse(Call<JwtAuthenticationResponse> call, Response<JwtAuthenticationResponse> response) {
-                if (response.isSuccessful()) {
-                    JwtAuthenticationResponse jwtAuthenticationResponse = response.body();
-                    tokenManager.saveTokens(jwtAuthenticationResponse.getToken(), jwtAuthenticationResponse.getRefreshToken());
-                    apiCallback.onSuccess(null);
+                    tokenManager.saveTokens(response.body().getData().getToken());
+                    apiCallback.onSuccess(response.body().getData());
                 } else {
                     apiCallback.onError(new Throwable("Error: " + response.message()));
                 }
             }
 
             @Override
-            public void onFailure(Call<JwtAuthenticationResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<AuthResponse>> call, Throwable t) {
                 apiCallback.onError(t);
             }
         });
     }
 
-    public void logout(ApiCallback<Void> apiCallback) {
-        authService.logOut().enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    tokenManager.clearTokens();
-                    apiCallback.onSuccess(null);
-                } else {
-                    apiCallback.onError(new Throwable("Error: " + response.message()));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                apiCallback.onError(t);
-            }
-        });
+    public void logout() {
+        tokenManager.clearTokens();
     }
 }

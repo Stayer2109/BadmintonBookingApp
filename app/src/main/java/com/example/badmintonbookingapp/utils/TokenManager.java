@@ -9,7 +9,6 @@ import org.json.JSONObject;
 public class TokenManager {
     private static final String PREF_NAME = "badminton_app_prefs";
     private static final String KEY_ACCESS_TOKEN = null;
-    private static final String KEY_REFRESH_TOKEN = null;
 
     private static TokenManager instance;
     private SharedPreferences prefs;
@@ -29,9 +28,8 @@ public class TokenManager {
         return instance;
     }
 
-    public void saveTokens(String accessToken, String refreshToken) {
+    public void saveTokens(String accessToken) {
         editor.putString(KEY_ACCESS_TOKEN, accessToken);
-        editor.putString(KEY_REFRESH_TOKEN, refreshToken);
         editor.apply();
     }
 
@@ -74,15 +72,11 @@ public class TokenManager {
             JSONObject jsonObject = new JSONObject(payload);
 
             // Extract "id" filed from JSON payload
-            return jsonObject.optInt("id", -1);
+            return jsonObject.optInt("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid", -1);
         } catch (JSONException | IllegalArgumentException e) {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public String getRefreshToken() {
-        return prefs.getString(KEY_REFRESH_TOKEN, null);
     }
 
     public boolean IsExpired (){
@@ -122,7 +116,7 @@ public class TokenManager {
             JSONObject jsonObject = new JSONObject(payload);
 
             // Extract "username" field from JSON payload
-            return jsonObject.optString("sub", null);
+            return jsonObject.optString("UserName", null);
         } catch (JSONException | IllegalArgumentException e) {
             e.printStackTrace();
             return null;
@@ -131,7 +125,6 @@ public class TokenManager {
 
     public void clearTokens() {
         editor.remove(KEY_ACCESS_TOKEN);
-        editor.remove(KEY_REFRESH_TOKEN);
         editor.apply();
     }
 }

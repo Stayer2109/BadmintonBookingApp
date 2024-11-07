@@ -19,7 +19,7 @@
         //quang docker
         //private static String baseUrl = "http://172.30.60.233:8080";
         //quang local
-        //private static String baseUrl = "http://192.168.56.1:8080";
+        private static String baseUrl = "http://localhost:5074";
         //phong local
         //private static String baseUrl = "http://192.168.1.54:8080";
         //hoang local
@@ -32,20 +32,20 @@
 
         public static Retrofit getClient(TokenManager tokenManager, AuthRepository authRepository) {
             if (retrofit == null) {
-                Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer()) // Register the LocalTime deserializer
-                        .registerTypeAdapter(Boolean.class, new BooleanDeserializer())
-                        .create();
-
-                // Add AuthInterceptor to OkHttpClient
-                OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                        .addInterceptor(new AuthInterceptor(tokenManager, authRepository))  // AuthInterceptor should be added here
-                        .build();
+//                Gson gson = new GsonBuilder()
+//                        .registerTypeAdapter(LocalTime.class, new LocalTimeDeserializer()) // Register the LocalTime deserializer
+//                        .registerTypeAdapter(Boolean.class, new BooleanDeserializer())
+//                        .create();
+//
+//                // Add AuthInterceptor to OkHttpClient
+//                OkHttpClient okHttpClient = new OkHttpClient.Builder()
+//                        .addInterceptor(new AuthInterceptor(tokenManager, authRepository))  // AuthInterceptor should be added here
+//                        .build();
 
                 retrofit = new Retrofit.Builder()
                         .baseUrl(baseUrl)
-                        .client(okHttpClient)
-                        .addConverterFactory(GsonConverterFactory.create(gson))
+                        //.client(okHttpClient)
+                        .addConverterFactory(GsonConverterFactory.create())
                         .build();
             }
             return retrofit;

@@ -56,37 +56,38 @@ public class MyAccountFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         tvEmail = view.findViewById(R.id.tvEmail);
         tvName = view.findViewById(R.id.tvName);
-        tvGender = view.findViewById(R.id.tvGender);
-        tvDob = view.findViewById(R.id.tvDob);
+//        tvGender = view.findViewById(R.id.tvGender);
+//        tvDob = view.findViewById(R.id.tvDob);
         btnLogout = view.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(v -> Logout());
     }
 
     @SuppressLint("SetTextI18n")
     private void GetAccount() {
-        authViewModel.getAccount();
-        authViewModel.getAccountInfo().observe(getViewLifecycleOwner(), userResponseDTO -> {
-            if (userResponseDTO != null) {
-                tvUsername.setText(userResponseDTO.getUsername());
-                tvEmail.setText(userResponseDTO.getEmail());
-                tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
-
-                // Set gender
-                if(userResponseDTO.getGender() != null) tvGender.setText(userResponseDTO.getGender() ? "male" : "female");
-                else tvGender.setText("unknown");
-
-                // Format and display date of birth
-                if (userResponseDTO.getDob() != null){
-                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    String dob = formatter.format(userResponseDTO.getDob());
-                    tvDob.setText(dob);
-                }
-                else tvDob.setText("unknown");
+/*        authViewModel.getSignInResponse().observe(getViewLifecycleOwner(), authResponse -> {
+            if (authResponse != null) {
+                tvUsername.setText(authResponse.getUsername());
+//                tvEmail.setText(userResponseDTO.getEmail());
+//                tvName.setText(userResponseDTO.getFirstName() + " " + userResponseDTO.getLastName());
+//
+//                // Set gender
+//                if(userResponseDTO.getGender() != null) tvGender.setText(userResponseDTO.getGender() ? "male" : "female");
+//                else tvGender.setText("unknown");
+//
+//                // Format and display date of birth
+//                if (userResponseDTO.getDob() != null){
+//                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//                    String dob = formatter.format(userResponseDTO.getDob());
+//                    tvDob.setText(dob);
+//                }
+//                else tvDob.setText("unknown");
             }
 
-        });
-        /*tokenManager = TokenManager.getInstance(getActivity());
-        tvUsername.setText(tokenManager.getUsername());*/
+        });*/
+        tokenManager = TokenManager.getInstance(getActivity());
+        tvName.setText(tokenManager.getId().toString());
+        tvUsername.setText(tokenManager.getUsername());
+        tvEmail.setText(tokenManager.getRole());
     }
 
     private void Logout() {
