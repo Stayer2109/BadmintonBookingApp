@@ -1,17 +1,13 @@
 package com.example.badmintonbookingapp.dto.response;
 
-import com.example.badmintonbookingapp.dto.TelephonesDTO;
 import com.example.badmintonbookingapp.dto.YardImagesDTO;
 import com.google.gson.annotations.SerializedName;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 public class YardResponseDTO {
-    @SerializedName("id")
-    private Integer id;
+
+    @SerializedName("yardId")
+    private Integer yardId;
 
     @SerializedName("name")
     private String name;
@@ -19,73 +15,34 @@ public class YardResponseDTO {
     @SerializedName("address")
     private String address;
 
-    @SerializedName("province_id")
+    @SerializedName("provinceId")
     private Integer provinceId;
+
+    @SerializedName("openTime")
+    private String openTime;
+
+    @SerializedName("closeTime")
+    private String closeTime;
 
     @SerializedName("description")
     private String description;
 
-    @SerializedName("status")
-    private Boolean status;
+    @SerializedName("ownerId")
+    private Integer ownerId;
 
-    @SerializedName("open_time")
-    private LocalTime openTime;  // Maps to open_time in JSON
+    @SerializedName("isActive")
+    private Boolean isActive;
 
-    @SerializedName("close_time")
-    private LocalTime closeTime; // Maps to close_time in JSON
+    @SerializedName("yardImages")
+    private List<YardImagesDTO> yardImages;
 
-    @SerializedName("create_date")
-    private LocalDate createDate; // Maps to create_date in JSON
-
-    @SerializedName("update_date")
-    private LocalDate updateDate; // Maps to update_date in JSON
-
-    @SerializedName("create_by")
-    private Integer createBy;
-
-    @SerializedName("update_by")
-    private Integer updateBy;
-
-    @SerializedName("host_id")
-    private Integer hostId;
-
-    @SerializedName("telephones")
-    private List<TelephonesDTO> telephones;
-
-    @SerializedName("slots")
-    private List<SlotResponseDTO> slots;
-
-    @SerializedName("images")
-    private List<YardImagesDTO> images;
-
-    public YardResponseDTO(Integer id, String name, String address, Integer provinceId, String description, Boolean status, LocalTime openTime, LocalTime closeTime, LocalDate createDate, LocalDate updateDate, Integer createBy, Integer updateBy, Integer hostId, List<TelephonesDTO> telephones, List<SlotResponseDTO> slots, List<YardImagesDTO> images) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.provinceId = provinceId;
-        this.description = description;
-        this.status = status;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-        this.createBy = createBy;
-        this.updateBy = updateBy;
-        this.hostId = hostId;
-        this.telephones = telephones;
-        this.slots = slots;
-        this.images = images;
+    // Getters and Setters
+    public Integer getYardId() {
+        return yardId;
     }
 
-    public YardResponseDTO(int id, String centralParkCourt, String address, int provinceId, String mainCourtInCentralPark, boolean status, String time, String time1) {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setYardId(Integer yardId) {
+        this.yardId = yardId;
     }
 
     public String getName() {
@@ -112,6 +69,22 @@ public class YardResponseDTO {
         this.provinceId = provinceId;
     }
 
+    public String getOpenTime() {
+        return openTime;
+    }
+
+    public void setOpenTime(String openTime) {
+        this.openTime = openTime;
+    }
+
+    public String getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(String closeTime) {
+        this.closeTime = closeTime;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -120,113 +93,43 @@ public class YardResponseDTO {
         this.description = description;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public LocalTime getOpenTime() {
-        return openTime;
+    public Boolean getIsActive() {
+        return isActive;
     }
 
-    public void setOpenTime(LocalTime openTime) {
-        this.openTime = openTime;
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
-    public LocalTime getCloseTime() {
-        return closeTime;
+    public List<YardImagesDTO> getYardImages() {
+        return yardImages;
     }
 
-    public void setCloseTime(LocalTime closeTime) {
-        this.closeTime = closeTime;
-    }
-
-    public LocalDate getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDate createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDate getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(LocalDate updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Integer getHostId() {
-        return hostId;
-    }
-
-    public void setHostId(Integer hostId) {
-        this.hostId = hostId;
-    }
-
-    public List<TelephonesDTO> getTelephones() {
-        return telephones;
-    }
-
-    public void setTelephones(List<TelephonesDTO> telephones) {
-        this.telephones = telephones;
-    }
-
-    public List<SlotResponseDTO> getSlots() {
-        return slots;
-    }
-
-    public void setSlots(List<SlotResponseDTO> slots) {
-        this.slots = slots;
-    }
-
-    public List<YardImagesDTO> getImages() {
-        return images;
-    }
-
-    public void setImages(List<YardImagesDTO> images) {
-        this.images = images;
+    public void setYardImages(List<YardImagesDTO> yardImages) {
+        this.yardImages = yardImages;
     }
 
     @Override
     public String toString() {
         return "YardResponseDTO{" +
-                "id=" + id +
+                "yardId=" + yardId +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", provinceId=" + provinceId +
+                ", openTime='" + openTime + '\'' +
+                ", closeTime='" + closeTime + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
-                ", openTime=" + openTime +
-                ", closeTime=" + closeTime +
-                ", createDate=" + createDate +
-                ", updateDate=" + updateDate +
-                ", createBy=" + createBy +
-                ", updateBy=" + updateBy +
-                ", hostId=" + hostId +
-                ", telephones=" + telephones +
-                ", slots=" + slots +
-                ", images=" + images +
+                ", ownerId=" + ownerId +
+                ", isActive=" + isActive +
+                ", yardImages=" + yardImages +
                 '}';
     }
 }

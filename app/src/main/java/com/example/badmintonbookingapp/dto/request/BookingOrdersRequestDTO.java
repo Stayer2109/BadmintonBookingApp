@@ -1,16 +1,24 @@
 package com.example.badmintonbookingapp.dto.request;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class BookingOrdersRequestDTO {
-    private Integer yardId;
+
+    @SerializedName("userId")
     private Integer userId;
-    private Integer slotId;
 
-    public Integer getYardId() {
-        return yardId;
-    }
+    @SerializedName("bookingDate")
+    private String bookingDate;
 
-    public void setYardId(Integer yardId) {
-        this.yardId = yardId;
+    @SerializedName("slotIds")
+    private List<Integer> slotIds;
+
+    public BookingOrdersRequestDTO(Integer userId, List<Integer> slotIds, String bookingDate) {
+        this.userId = userId;
+        this.slotIds = slotIds;
+        this.bookingDate = bookingDate;
     }
 
     public Integer getUserId() {
@@ -21,11 +29,28 @@ public class BookingOrdersRequestDTO {
         this.userId = userId;
     }
 
-    public Integer getSlotId() {
-        return slotId;
+    public List<Integer> getSlotIds() {
+        return slotIds;
     }
 
-    public void setSlotId(Integer slotId) {
-        this.slotId = slotId;
+    public void setSlotIds(List<Integer> slotIds) {
+        this.slotIds = slotIds;
+    }
+
+    public String getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(String bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    @Override
+    public String toString() {
+        return "BookingOrdersRequestDTO{" +
+                "userId=" + userId +
+                ", bookingDate='" + bookingDate + '\'' +
+                ", slotIds=" + slotIds +
+                '}';
     }
 }

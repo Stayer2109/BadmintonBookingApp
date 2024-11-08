@@ -43,6 +43,7 @@ public class YardDetailActivity extends AppCompatActivity {
     private TextView address;
     private TextView openingHours;
     private TextView status;
+    private TextView description;
     private LinearLayout contactContainer;
     private Button bookCourtButton;
 
@@ -66,6 +67,7 @@ public class YardDetailActivity extends AppCompatActivity {
         imageCarousel = findViewById(R.id.imageCarousel);
         carouselIndicator = findViewById(R.id.carouselIndicator);
         bookCourtButton = findViewById(R.id.bookCourtButton);
+        description = findViewById(R.id.description);
 
         // Get the yard ID passed from the intent
         yardId = getIntent().getIntExtra("yard_id", 0);
@@ -103,26 +105,27 @@ public class YardDetailActivity extends AppCompatActivity {
         yardName.setText(yard.getName());
         address.setText(yard.getAddress());
         openingHours.setText(String.format("%s - %s", yard.getOpenTime(), yard.getCloseTime()));
-        status.setText(yard.getStatus() ? "Available" : "Unavailable");
+        status.setText(yard.getIsActive() ? "Available" : "Unavailable");
+        description.setText(yard.getDescription());
 
         // Set color based on status
-        status.setTextColor(ContextCompat.getColor(this, yard.getStatus() ? R.color.green : R.color.red));
+        status.setTextColor(ContextCompat.getColor(this, yard.getIsActive() ? R.color.green : R.color.red));
 
         // Populate multiple contact numbers dynamically
-        contactContainer.removeAllViews();
-        for (TelephonesDTO telephone : yard.getTelephones()) {
-            View contactView = getLayoutInflater().inflate(R.layout.contacts_item, contactContainer, false);
-            TextView phoneTextView = contactView.findViewById(R.id.phoneNumber);
-            phoneTextView.setText(telephone.getTelephone());
-            phoneTextView.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone.getTelephone()));
-                startActivity(intent);
-            });
-            contactContainer.addView(contactView);
-        }
+//        contactContainer.removeAllViews();
+//        for (TelephonesDTO telephone : yard.getTelephones()) {
+//            View contactView = getLayoutInflater().inflate(R.layout.contacts_item, contactContainer, false);
+//            TextView phoneTextView = contactView.findViewById(R.id.phoneNumber);
+//            phoneTextView.setText(telephone.getTelephone());
+//            phoneTextView.setOnClickListener(v -> {
+//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone.getTelephone()));
+//                startActivity(intent);
+//            });
+//            contactContainer.addView(contactView);
+//        }
 
-        // Set up the image carousel
-        List<YardImagesDTO> imageList = yard.getImages();
+//         Set up the image carousel
+        List<YardImagesDTO> imageList = yard.getYardImages();
         if (imageList != null && !imageList.isEmpty()) {
             List<String> imageUrls = new ArrayList<>();
             for (YardImagesDTO image : imageList) {

@@ -48,16 +48,15 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
     @Override
     public void onBindViewHolder(@NonNull YardViewHolder holder, int position) {
         YardResponseDTO yard = yards.get(position);
-        Log.d("YARRRRRDDD", "onBindViewHolder: " + yard.toString());
 
         holder.yardName.setText(yard.getName());
         holder.yardAddress.setText(String.format("Address: %s", yard.getAddress()));
-        holder.yardStatus.setText(String.format("Status: %s", yard.getStatus() ? "Available" : "Unavailable"));
+        holder.yardStatus.setText(String.format("Status: %s", yard.getIsActive() ? "Available" : "Unavailable"));
         holder.yardOpenCloseTime.setText(String.format("Open: %s - Close: %s", yard.getOpenTime(), yard.getCloseTime()));
         holder.yardDescription.setText(String.format("Description: %s", yard.getDescription()));
 
-        if (yard.getImages() != null && !yard.getImages().isEmpty()) {
-            String imageUrl = yard.getImages().get(0).getImg();
+        if (yard.getYardImages() != null && !yard.getYardImages().isEmpty()) {
+            String imageUrl = yard.getYardImages().get(0).getImg();
             Glide.with(holder.itemView.getContext())
                     .load(imageUrl)
                     .into(holder.yardImage);
@@ -66,19 +65,19 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
         }
 
         // Display telephones
-        StringBuilder telephones = new StringBuilder();
-        if (yard.getTelephones() != null && !yard.getTelephones().isEmpty()) {
-            telephones.append("Contacts:");
-            for (TelephonesDTO telephone : yard.getTelephones()) {
-                telephones.append("\n\tNumber: ").append(telephone.getTelephone());
-            }
-            holder.yardTelephones.setText(telephones.toString());
-        } else holder.yardTelephones.setText("Contacts: None");
+//        StringBuilder telephones = new StringBuilder();
+//        if (yard.gt() != null && !yard.getTelephones().isEmpty()) {
+//            telephones.append("Contacts:");
+//            for (TelephonesDTO telephone : yard.getTelephones()) {
+//                telephones.append("\n\tNumber: ").append(telephone.getTelephone());
+//            }
+//            holder.yardTelephones.setText(telephones.toString());
+//        } else holder.yardTelephones.setText("Contacts: None");
 
         // Set an OnClickListener to start YardDetailActivity with the yard ID
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, YardDetailActivity.class);
-            intent.putExtra("yard_id", yard.getId()); // Passing the yard ID
+            intent.putExtra("yard_id", yard.getYardId()); // Passing the yard ID
             context.startActivity(intent);
         });
     }
@@ -93,7 +92,7 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
         TextView yardAddress;
         TextView yardStatus;
         TextView yardOpenCloseTime;
-        TextView yardTelephones;
+//        TextView yardTelephones;
         TextView yardDescription;
         ImageView yardImage;
 
@@ -103,7 +102,7 @@ public class YardAdapter extends RecyclerView.Adapter<YardAdapter.YardViewHolder
             yardAddress = itemView.findViewById(R.id.yard_address);
             yardStatus = itemView.findViewById(R.id.yard_status);
             yardOpenCloseTime = itemView.findViewById(R.id.yard_open_close_time);
-            yardTelephones = itemView.findViewById(R.id.yard_telephones);
+//            yardTelephones = itemView.findViewById(R.id.yard_telephones);
             yardDescription = itemView.findViewById(R.id.yard_desc);
             yardImage = itemView.findViewById(R.id.yard_image);
         }

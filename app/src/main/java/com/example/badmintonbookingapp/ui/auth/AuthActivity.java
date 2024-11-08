@@ -145,9 +145,9 @@ public class AuthActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         role = new AtomicInteger(0);
         if (rbUser.isChecked()) {
-            role.set(2);
-        } else if (rbCourtOwner.isChecked()) {
             role.set(4);
+        } else if (rbCourtOwner.isChecked()) {
+            role.set(3);
         } else {
             Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
             return;

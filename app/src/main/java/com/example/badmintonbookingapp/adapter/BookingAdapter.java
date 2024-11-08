@@ -1,6 +1,5 @@
 package com.example.badmintonbookingapp.adapter;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.badmintonbookingapp.R;
 import com.example.badmintonbookingapp.dto.response.BookingOrdersResponseDTO;
 
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder> {
 
-    private List<BookingOrdersResponseDTO> bookingList;
+    private List<BookingOrdersResponseDTO> bookings = new ArrayList<>();
 
-
-    public void submitList(List<BookingOrdersResponseDTO> bookingList) {
-        this.bookingList = bookingList;
+    // Phương thức để cập nhật danh sách booking
+    public void setBookings(List<BookingOrdersResponseDTO> newBookings) {
+        this.bookings.clear();
+        if (newBookings != null) {
+            this.bookings.addAll(newBookings);
+        }
         notifyDataSetChanged();
     }
-
 
     @NonNull
     @Override
@@ -34,54 +34,31 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         return new BookingViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
-        BookingOrdersResponseDTO booking = bookingList.get(position);
-        holder.bookingIdText.setText("Booking ID: " + booking.getId());
+        BookingOrdersResponseDTO booking = bookings.get(position);
 
-        if (booking.getStatus() != null) {
-            holder.bookingStatusText.setText("Status: " + (booking.getStatus() ? "Confirmed" : "Pending"));
-        }
-
-        if (booking.getBookingAt() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            holder.bookingTimeText.setText("Booking Time: " + booking.getBookingAt().format(formatter));
-        }
-        if(booking.getYard() != null) {
-            holder.bookingYardText.setText("Yard ID: " + booking.getYard().getId());
-        }
-
-        if(booking.getSlot() != null) {
-            holder.bookingSlotText.setText("Slot ID: " + booking.getSlot().getId());
-        }
+        // Gán dữ liệu vào các TextView
+        holder.bookingIdTextView.setText("Booking ID: " + booking.getBookingOrderId());
+        holder.bookingDateTextView.setText("Date: " + booking.getBookingDate());
+        holder.bookingStatusTextView.setText("Status: " + booking.getActive());
     }
-
-
 
     @Override
     public int getItemCount() {
-        return bookingList != null ? bookingList.size() : 0;
+        return bookings != null ? bookings.size() : 0;
     }
 
-
     static class BookingViewHolder extends RecyclerView.ViewHolder {
-        TextView bookingIdText;
-        TextView bookingStatusText;
-        TextView bookingTimeText;
-        TextView bookingYardText;
-        TextView bookingSlotText;
+        TextView bookingIdTextView;
+        TextView bookingDateTextView;
+        TextView bookingStatusTextView;
 
-
-        BookingViewHolder(View itemView) {
+        public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
-            bookingIdText = itemView.findViewById(R.id.bookingIdText);
-            bookingStatusText = itemView.findViewById(R.id.bookingStatusText);
-            bookingTimeText = itemView.findViewById(R.id.bookingTimeText);
-            bookingYardText = itemView.findViewById(R.id.bookingYardText);
-            bookingSlotText = itemView.findViewById(R.id.bookingSlotText);
-
-
+            bookingIdTextView = itemView.findViewById(R.id.bookingIdText);
+            bookingDateTextView = itemView.findViewById(R.id.bookingTimeText);
+            bookingStatusTextView = itemView.findViewById(R.id.bookingStatusText);
         }
     }
 }

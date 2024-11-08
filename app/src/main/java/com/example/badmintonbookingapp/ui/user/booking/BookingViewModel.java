@@ -1,19 +1,21 @@
 package com.example.badmintonbookingapp.ui.user.booking;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.badmintonbookingapp.dto.ApiResponse;
 import com.example.badmintonbookingapp.dto.request.BookingOrdersRequestDTO;
 import com.example.badmintonbookingapp.dto.response.BookingOrdersResponseDTO;
-import com.example.badmintonbookingapp.dto.response.SimpleYardResponseDTO;
 import com.example.badmintonbookingapp.dto.response.SlotResponseDTO;
-import com.example.badmintonbookingapp.network.BookingOrdersService;
+import com.example.badmintonbookingapp.network.ApiCallback;
+import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.repository.BookingRepository;
 import com.example.badmintonbookingapp.repository.SlotRepository;
+import com.example.badmintonbookingapp.utils.TokenManager;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -25,124 +27,111 @@ import retrofit2.Response;
 
 public class BookingViewModel extends ViewModel {
 
-    private final BookingRepository bookingRepository;
-    private final SlotRepository slotRepository;
-    private final MutableLiveData<List<SlotResponseDTO>> slots = new MutableLiveData<>();
-    private final MutableLiveData<List<BookingOrdersResponseDTO>> bookingOrders = new MutableLiveData<>();
+    private static final String TAG = "BookingViewModel";
 
+    private final SlotRepository slotRepository;
+    private final BookingRepository bookingRepository;
+    private final MutableLiveData<List<SlotResponseDTO>> slots = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<BookingOrdersResponseDTO>> orders = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Boolean> bookingCreationStatus = new MutableLiveData<>();
-    private final MutableLiveData<String> bookingUpdateStatus = new MutableLiveData<>();
+    private final MutableLiveData<List<BookingOrdersResponseDTO>> booksLiveData = new MutableLiveData<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public BookingViewModel(BookingRepository bookingRepository, SlotRepository slotRepository) {
+    public BookingViewModel(TokenManager tokenManager, AuthRepository authRepository, BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
-        this.slotRepository = slotRepository;
+        this.slotRepository = new SlotRepository(tokenManager, authRepository);
+    }
 
+    public void createBooking(int yardId, List<Integer> slotIds, int userId) {
+        executorService.execute(() -> {
+            // Create a BookingOrdersRequestDTO object with a list of slotIds
+            BookingOrdersRequestDTO bookingRequest = new BookingOrdersRequestDTO(userId, slotIds, getCurrentDate());
+
+            // Send the BookingOrdersRequestDTO to the API
+            bookingRepository.createBookingOrders(bookingRequest, new Callback<ApiResponse<BookingOrdersResponseDTO>>() {
+                @Override
+                public void onResponse(Call<ApiResponse<BookingOrdersResponseDTO>> call, Response<ApiResponse<BookingOrdersResponseDTO>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        bookingCreationStatus.postValue(true);
+                        Log.d(TAG, "Booking created successfully. Response: " + response.body().getData());
+                    } else {
+                        bookingCreationStatus.postValue(false);
+                        Log.e(TAG, "Failed to create booking. Error code: " + response.code() + ", Message: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ApiResponse<BookingOrdersResponseDTO>> call, Throwable throwable) {
+                    bookingCreationStatus.postValue(false);
+                    Log.e(TAG, "Error creating booking", throwable);
+                }
+            });
+        });
+    }
+
+    public void fetchBooksByUserId(int userId, ApiCallback<List<BookingOrdersResponseDTO>> callback) {
+        // Gọi phương thức getAllBookingOrdersByUserId() với 2 đối số: userId và callback
+        bookingRepository.getAllBookingOrdersByUserId(userId, new Callback<ApiResponse<List<BookingOrdersResponseDTO>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<BookingOrdersResponseDTO>>> call, Response<ApiResponse<List<BookingOrdersResponseDTO>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<BookingOrdersResponseDTO> data = response.body().getData();
+                    callback.onSuccess(data);
+                    Log.d("OrderViewModel", "Fetched booking orders: " + data.size() + " items.");
+                } else {
+                    String errorMessage = response.message() != null ? response.message() : "Unknown error";
+                    callback.onError(new Throwable("Failed to fetch booking orders: " + errorMessage));
+                    Log.e("OrderViewModel", "Failed to fetch booking orders: " + errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<BookingOrdersResponseDTO>>> call, Throwable t) {
+                callback.onError(t);
+                Log.e("OrderViewModel", "Error fetching booking orders", t);
+            }
+        });
+    }
+
+    public void fetchSlotsByYardId(int yardId) {
+        slotRepository.fetchSlotsByYardId(yardId, new ApiCallback<List<SlotResponseDTO>>() {
+            @Override
+            public void onSuccess(List<SlotResponseDTO> result) {
+                slots.postValue(result);
+                Log.d(TAG, "Fetched slots for yard ID " + yardId + ": " + result.size());
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Log.e(TAG, "Error fetching slots: " + error.getMessage());
+            }
+        });
+    }
+
+    public LiveData<List<BookingOrdersResponseDTO>> getOrders() {
+        return orders;
     }
 
     public LiveData<List<SlotResponseDTO>> getSlots() {
         return slots;
     }
 
-    public LiveData<List<BookingOrdersResponseDTO>> getBookingOrders() {
-        return bookingOrders;
-    }
-
     public LiveData<Boolean> getBookingCreationStatus() {
         return bookingCreationStatus;
     }
 
-    public LiveData<String> getBookingUpdateStatus() {
-        return bookingUpdateStatus;
+    public LiveData<List<BookingOrdersResponseDTO>> getBooksLiveData() {
+        return booksLiveData;
     }
 
-    public void fetchBookingOrdersByUserId(int userId) {
-        executorService.execute(() -> {
-            bookingRepository.getAllBookingOrdersByUserId(userId, new Callback<List<BookingOrdersResponseDTO>>() {
-                @Override
-                public void onResponse(Call<List<BookingOrdersResponseDTO>> call, Response<List<BookingOrdersResponseDTO>> response) {
-                    if (response.isSuccessful()) {
-                        bookingOrders.postValue(response.body());
-
-                    } else {
-                        bookingOrders.postValue(null);
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<BookingOrdersResponseDTO>> call, Throwable t) {
-                    bookingOrders.postValue(null);
-                    t.printStackTrace();
-                }
-            });
-
-        });
+    private String getCurrentDate() {
+        // Cách lấy ngày hiện tại theo định dạng mong muốn
+        return java.time.LocalDate.now().toString(); // Định dạng yyyy-MM-dd
     }
 
-    public void createBooking(int yardId, int slotId, int userId) {
-        executorService.execute(() -> {
-            List<BookingOrdersRequestDTO> bookingRequests = new ArrayList<>();
-            BookingOrdersRequestDTO bookingRequest = new BookingOrdersRequestDTO();
-            bookingRequest.setYardId(yardId);
-            bookingRequest.setSlotId(slotId);
-            bookingRequest.setUserId(userId);
-            bookingRequests.add(bookingRequest);
-
-            bookingRepository.createBookingOrders(bookingRequests, new Callback<List<BookingOrdersResponseDTO>>() {
-                @Override
-                public void onResponse(Call<List<BookingOrdersResponseDTO>> call, Response<List<BookingOrdersResponseDTO>> response) {
-                    bookingCreationStatus.postValue(response.isSuccessful());
-                }
-
-                @Override
-                public void onFailure(Call<List<BookingOrdersResponseDTO>> call, Throwable t) {
-                    bookingCreationStatus.postValue(false);
-                }
-            });
-        });
-    }
-
-    public void getSlotsByYardId(int yardId) {
-
-        slotRepository.getSlotsByYardId(yardId, new Callback<List<SlotResponseDTO>>() {
-            @Override
-            public void onResponse(Call<List<SlotResponseDTO>> call, Response<List<SlotResponseDTO>> response) {
-                if(response.isSuccessful()){
-                    slots.postValue(response.body());
-
-                }else{
-                    slots.postValue(null);
-                }
-            }
-
-
-            @Override
-            public void onFailure(Call<List<SlotResponseDTO>> call, Throwable t) {
-                slots.postValue(null);
-
-            }
-        });
-    }
-
-    public void updateBookingOrderStatus(int bookingId) {
-        executorService.execute(() -> {
-            bookingRepository.updateBookingOrderStatus(bookingId, new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.isSuccessful()) {
-                        bookingUpdateStatus.postValue(response.body());
-                    } else {
-                        bookingUpdateStatus.postValue("Failed to update status");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    bookingUpdateStatus.postValue("Failed to update status");
-                    t.printStackTrace();
-                }
-            });
-        });
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        executorService.shutdown();
     }
 }

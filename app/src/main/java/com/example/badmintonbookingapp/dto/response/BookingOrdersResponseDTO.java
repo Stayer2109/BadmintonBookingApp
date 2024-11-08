@@ -1,46 +1,45 @@
 package com.example.badmintonbookingapp.dto.response;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class BookingOrdersResponseDTO {
-    private Integer id;
-    private LocalDateTime bookingAt;
-    private Boolean status;
-    private SimpleYardResponseDTO yard;
+    @SerializedName("bookingOrderId")
+    private Integer bookingOrderId;
+
+    @SerializedName("userId")
     private Integer userId;
-    private SlotResponseDTO slot;
 
-    public Integer getId() {
-        return id;
+    @SerializedName("bookingDate")
+    private String bookingDate;
+
+    @SerializedName("isActive")
+    private Boolean isActive;
+
+    @SerializedName("slots")
+    private List<SlotResponseDTO> slots;
+
+    @SerializedName("user")
+    private UserResponseDTO user;
+
+    public BookingOrdersResponseDTO(Integer bookingOrderId, Integer userId, String bookingDate, Boolean isActive, List<SlotResponseDTO> slots, UserResponseDTO user) {
+        this.bookingOrderId = bookingOrderId;
+        this.userId = userId;
+        this.bookingDate = bookingDate;
+        this.isActive = isActive;
+        this.slots = slots;
+        this.user = user;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getBookingOrderId() {
+        return bookingOrderId;
     }
 
-    public LocalDateTime getBookingAt() {
-        return bookingAt;
-    }
-
-    public void setBookingAt(LocalDateTime bookingAt) {
-        this.bookingAt = bookingAt;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public SimpleYardResponseDTO getYard() {
-        return yard;
-    }
-
-    public void setYard(SimpleYardResponseDTO yard) {
-        this.yard = yard;
+    public void setBookingOrderId(Integer bookingOrderId) {
+        this.bookingOrderId = bookingOrderId;
     }
 
     public Integer getUserId() {
@@ -51,11 +50,47 @@ public class BookingOrdersResponseDTO {
         this.userId = userId;
     }
 
-    public SlotResponseDTO getSlot() {
-        return slot;
+    public String getBookingDate() {
+        return bookingDate;
     }
 
-    public void setSlot(SlotResponseDTO slot) {
-        this.slot = slot;
+    public void setBookingDate(String bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public List<SlotResponseDTO> getSlots() {
+        return slots;
+    }
+
+    public void setSlots(List<SlotResponseDTO> slots) {
+        this.slots = slots;
+    }
+
+    public UserResponseDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserResponseDTO user) {
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "BookingOrdersResponseDTO{" +
+                "bookingOrderId=" + bookingOrderId +
+                ", userId=" + userId +
+                ", bookingDate='" + bookingDate + '\'' +
+                ", isActive=" + isActive +
+                ", slots=" + slots +
+                ", user=" + user +
+                '}';
     }
 }

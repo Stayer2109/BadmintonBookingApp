@@ -1,4 +1,6 @@
 package com.example.badmintonbookingapp.network;
+
+import com.example.badmintonbookingapp.dto.ApiResponse;
 import com.example.badmintonbookingapp.dto.request.SlotRequestDTO;
 import com.example.badmintonbookingapp.dto.response.SlotResponseDTO;
 
@@ -13,13 +15,14 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface SlotService {
+    String requestMapping = "/api/v1/slots";
 
-    @POST("/api/v1/slots/create/{yardId}")
+    @POST(requestMapping + "/create/{yardId}")
     Call<Object> createNewSlot(@Path("yardId") Integer yardId, @Body SlotRequestDTO slotRequestDTO);
 
-    @PATCH("/api/v1/slots/update/{slotId}")
+    @PATCH(requestMapping + "/update/{slotId}")
     Call<SlotRequestDTO> updateSlot(@Path("slotId") Integer slotId, @Body SlotRequestDTO slotRequestDTO);
 
-    @GET("/api/v1/slots/{yardId}")
-    Call<List<SlotResponseDTO>> getSlotsByYardId(@Path("yardId") Integer yardId);
+    @GET(requestMapping)
+    Call<ApiResponse<List<SlotResponseDTO>>> getSlotsByYardId(@Query("yardId") Integer yardId);
 }

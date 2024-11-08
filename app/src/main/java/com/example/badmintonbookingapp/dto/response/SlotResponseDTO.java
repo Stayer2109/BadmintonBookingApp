@@ -1,40 +1,35 @@
 package com.example.badmintonbookingapp.dto.response;
 
-import java.time.LocalDate;
+import com.google.gson.annotations.SerializedName;
+
 import java.time.LocalTime;
 
 public class SlotResponseDTO {
+    @SerializedName("slotId") // Ánh xạ với trường slotId trong JSON
     private Integer id;
 
     private Double price;
+    private String isActive;
 
-    private String status;
+    @SerializedName("startTime")
+    private String startTime;
 
-    private LocalTime startTime;
+    @SerializedName("endTime")
+    private String endTime;
 
-    private LocalTime endTime;
-
-    private LocalDate createDate;
-
-    private LocalDate updateDate;
-
-    private Integer createBy;
-
-    private Integer updateBy;
+    @SerializedName("yardId") // Giữ tên như trong JSON nhưng chuyển đổi sang Integer
+    private Integer yardId;
 
     public SlotResponseDTO() {
     }
 
-    public SlotResponseDTO(Integer id, Double price, String status, LocalTime startTime, LocalTime endTime, LocalDate createDate, LocalDate updateDate, Integer createBy, Integer updateBy) {
+    public SlotResponseDTO(Integer id, Double price, String isActive, String startTime, String endTime, Integer yardId) {
         this.id = id;
         this.price = price;
-        this.status = status;
+        this.isActive = isActive;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-        this.createBy = createBy;
-        this.updateBy = updateBy;
+        this.yardId = yardId;
     }
 
     public Integer getId() {
@@ -53,59 +48,47 @@ public class SlotResponseDTO {
         this.price = price;
     }
 
-    public String getStatus() {
-        return status;
+    public String getIsActive() {
+        return isActive;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public LocalDate getCreateDate() {
-        return createDate;
+    public Integer getYardId() {
+        return yardId;
     }
 
-    public void setCreateDate(LocalDate createDate) {
-        this.createDate = createDate;
+    public void setYardId(Integer yardId) {
+        this.yardId = yardId;
     }
 
-    public LocalDate getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(LocalDate updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
+    @Override
+    public String toString() {
+        return "SlotResponseDTO{" +
+                "id=" + id +
+                ", price=" + price +
+                ", isActive='" + isActive + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", yardId=" + yardId +
+                '}';
     }
 }
