@@ -70,25 +70,27 @@ public class BookingViewModel extends ViewModel {
     }
 
     public void fetchBooksByUserId(int userId, ApiCallback<List<BookingOrdersResponseDTO>> callback) {
-        // Gọi phương thức getAllBookingOrdersByUserId() với 2 đối số: userId và callback
-        bookingRepository.getAllBookingOrdersByUserId(userId, new Callback<ApiResponse<List<BookingOrdersResponseDTO>>>() {
+        bookingRepository.getAllBookingOrdersByUserId(userId, new ApiCallback<List<BookingOrdersResponseDTO>>() {
             @Override
-            public void onResponse(Call<ApiResponse<List<BookingOrdersResponseDTO>>> call, Response<ApiResponse<List<BookingOrdersResponseDTO>>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<BookingOrdersResponseDTO> data = response.body().getData();
+            public void onSuccess(List<BookingOrdersResponseDTO> data) {
+                if (data != null && !data.isEmpty()) {
                     callback.onSuccess(data);
-                    Log.d("OrderViewModel", "Fetched booking orders: " + data.size() + " items.");
+                    Log.d("OrderViewModel", "Fetched booking orders successfully. Total items: " + data.size());
+                    for (BookingOrdersResponseDTO order : data) {
+                        Log.d("OrderViewModel", "Order ID: " + order.getBookingOrderId());
+                        Log.d("OrderViewModel", "User ID: " + order.getUserId());
+                        Log.d("OrderViewModel", "Booking Date: " + order.getBookingDate());
+                    }
                 } else {
-                    String errorMessage = response.message() != null ? response.message() : "Unknown error";
-                    callback.onError(new Throwable("Failed to fetch booking orders: " + errorMessage));
-                    Log.e("OrderViewModel", "Failed to fetch booking orders: " + errorMessage);
+                    callback.onError(new Throwable("No booking orders found for userId: " + userId));
+                    Log.e("OrderViewModel", "No booking orders found for userId: " + userId);
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<List<BookingOrdersResponseDTO>>> call, Throwable t) {
-                callback.onError(t);
-                Log.e("OrderViewModel", "Error fetching booking orders", t);
+            public void onError(Throwable error) {
+                callback.onError(error);
+                Log.e("OrderViewModel", "Error fetching booking orders", error);
             }
         });
     }

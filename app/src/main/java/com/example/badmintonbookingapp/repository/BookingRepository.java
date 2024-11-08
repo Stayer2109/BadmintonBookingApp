@@ -3,10 +3,15 @@ package com.example.badmintonbookingapp.repository;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.badmintonbookingapp.client.APIClient;
 import com.example.badmintonbookingapp.dto.ApiResponse;
 import com.example.badmintonbookingapp.dto.request.BookingOrdersRequestDTO;
 import com.example.badmintonbookingapp.dto.response.BookingOrdersResponseDTO;
+import com.example.badmintonbookingapp.dto.response.YardResponseDTO;
+import com.example.badmintonbookingapp.network.ApiCallback;
 import com.example.badmintonbookingapp.network.BookingOrdersService;
 import com.example.badmintonbookingapp.utils.TokenManager;
 
@@ -25,6 +30,9 @@ public class BookingRepository {
     private final TokenManager tokenManager;
     private final AuthRepository authRepository;
 
+    private MutableLiveData<List<BookingOrdersResponseDTO>> ordersLiveData;
+    private MutableLiveData<BookingOrdersResponseDTO> orderLiveData;
+
     // Constructor to receive TokenManager, AuthRepository, and Context
     public BookingRepository(TokenManager tokenManager, AuthRepository authRepository) {
         this.tokenManager = tokenManager;
@@ -32,10 +40,12 @@ public class BookingRepository {
 
         Retrofit retrofit = APIClient.getClient(tokenManager, authRepository);
         bookingOrdersService = retrofit.create(BookingOrdersService.class);
+        orderLiveData = new MutableLiveData<>();
+        ordersLiveData = new MutableLiveData<>();
     }
 
     // Get all booking orders by user ID
-    public void getAllBookingOrdersByUserId(int userId, Callback<ApiResponse<List<BookingOrdersResponseDTO>>> callback) {
+    public void getAllBookingOrdersByUserId(int userId, ApiCallback<List<BookingOrdersResponseDTO>> callback) {
         // Change the API call type to match the expected response type
         Call<ApiResponse<List<BookingOrdersResponseDTO>>> call = bookingOrdersService.getAllBookingOrdersByUserId(userId);
 
@@ -43,17 +53,25 @@ public class BookingRepository {
             @Override
             public void onResponse(Call<ApiResponse<List<BookingOrdersResponseDTO>>> call, Response<ApiResponse<List<BookingOrdersResponseDTO>>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.onResponse(call, response);
+                    Log.d(TAG, "Full response: " + response.body().toString());
+                    List<BookingOrdersResponseDTO> data = response.body().getData();
+                    Log.d(TAG, "onResponse: " + response);
+                    if (data != null && !data.isEmpty()) {
+                        ordersLiveData.postValue(data);
+                        callback.onSuccess(data);
+                    } else {
+                        Log.e(TAG, "No booking orders found for userId: " + userId);
+                    }
                 } else {
-                    Log.e(TAG, "Failed to fetch booking orders. Error code: " + response);
-                    callback.onResponse(call, Response.error(response.code(), response.errorBody()));
+                    Log.e(TAG, "Failed to fetch booking orders. Error code: " + response.code());
+                    callback.onError(new Throwable("Failed to fetch booking orders. Error code: " + response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<List<BookingOrdersResponseDTO>>> call, Throwable t) {
                 Log.e(TAG, "Error fetching booking orders", t);
-                callback.onFailure(call, t);
+                callback.onError(t);
             }
         });
     }
@@ -85,5 +103,13 @@ public class BookingRepository {
                 callback.onFailure(call, t);
             }
         });
+    }
+
+    public LiveData<List<BookingOrdersResponseDTO>> getOrders() {
+        return ordersLiveData;
+    }
+
+    public LiveData<BookingOrdersResponseDTO> getOrder() {
+        return orderLiveData;
     }
 }

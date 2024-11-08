@@ -21,7 +21,7 @@ public interface BookingOrdersService {
     Call<ApiResponse<BookingOrdersResponseDTO>> createBookingOrder(@Body BookingOrdersRequestDTO bookingOrdersRequestDTO);
 
     @GET(requestMapping)
-    Call<ApiResponse<List<BookingOrdersResponseDTO>>> getAllBookingOrdersByUserId(@Query("userId") Integer userId);
+    Call<ApiResponse<List<BookingOrdersResponseDTO>>> getAllBookingOrdersByUserId(@Query("customerId") Integer userId);
 
     @PATCH("/api/v1/bookingOrders/status/{id}")
     Call<String> updateBookingOrderStatus(@Path("id") Integer id);
