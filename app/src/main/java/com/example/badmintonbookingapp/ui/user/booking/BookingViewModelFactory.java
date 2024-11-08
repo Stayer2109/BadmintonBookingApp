@@ -1,28 +1,30 @@
 package com.example.badmintonbookingapp.ui.user.booking;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.badmintonbookingapp.repository.AuthRepository;
 import com.example.badmintonbookingapp.repository.BookingRepository;
-import com.example.badmintonbookingapp.repository.SlotRepository;
+import com.example.badmintonbookingapp.utils.TokenManager;
 
 public class BookingViewModelFactory implements ViewModelProvider.Factory {
-
+    private final TokenManager tokenManager;
+    private final AuthRepository authRepository;
     private final BookingRepository bookingRepository;
-    private final SlotRepository slotRepository;
 
-    public BookingViewModelFactory(BookingRepository bookingRepository, SlotRepository slotRepository) {
+    public BookingViewModelFactory(TokenManager tokenManager, AuthRepository authRepository, BookingRepository bookingRepository) {
+        this.tokenManager = tokenManager;
+        this.authRepository = authRepository;
         this.bookingRepository = bookingRepository;
-        this.slotRepository = slotRepository;
     }
-
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(BookingViewModel.class)) {
-            return (T) new BookingViewModel(bookingRepository, slotRepository);
+            return (T) new BookingViewModel(tokenManager, authRepository, bookingRepository);
         }
-
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 }

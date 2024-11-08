@@ -57,5 +57,16 @@ public class ApiResponse<T> {
     public void setCode(String code) {
         this.code = code;
     }
+
+    @Override
+    public String toString() {
+        return "ApiResponse{" +
+                "data=" + data +
+                ", additionalData='" + additionalData + '\'' +
+                ", message='" + message + '\'' +
+                ", statusCode=" + statusCode +
+                ", code='" + code + '\'' +
+                '}';
+    }
 }
 

@@ -21,7 +21,7 @@ import java.util.List;
 public class UserHomeViewModel extends ViewModel {
     private final YardRepository yardRepository;
     private final MutableLiveData<List<YardResponseDTO>> allYards;
-    private int currentPage = 0;
+    private int currentPage = 1;
     private boolean isLastPage = false;
 
     public UserHomeViewModel(TokenManager tokenManager, AuthRepository authRepository) {

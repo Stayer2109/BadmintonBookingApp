@@ -110,33 +110,33 @@ public class YardOwnerDetail extends AppCompatActivity {
         yardName.setText(yard.getName());
         address.setText(yard.getAddress());
         openingHours.setText(String.format("%s - %s", yard.getOpenTime(), yard.getCloseTime()));
-        status.setText(yard.getStatus() ? "Available" : "Unavailable");
+        status.setText(yard.getIsActive() ? "Available" : "Unavailable");
 
         // Set color based on status
-        if (yard.getStatus()) {
+        if (yard.getIsActive()) {
             status.setTextColor(ContextCompat.getColor(this, R.color.green));
         } else {
             status.setTextColor(ContextCompat.getColor(this, R.color.red));
         }
 
         // Populate multiple contact numbers dynamically
-        contactContainer.removeAllViews(); // Clear any previous views
-        for (TelephonesDTO telephone : yard.getTelephones()) {
-            // Inflate the contact_item.xml for each phone number
-            View contactView = getLayoutInflater().inflate(R.layout.contacts_item, contactContainer, false);
-
-            // Set the phone number text
-            TextView phoneTextView = contactView.findViewById(R.id.phoneNumber);
-            phoneTextView.setText(telephone.getTelephone());
-
-            // Optional: make the phone number clickable to dial
-            phoneTextView.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone.getTelephone()));
-                startActivity(intent);
-            });
-
-            // Add the inflated contact view to the container
-            contactContainer.addView(contactView);
-        }
+//        contactContainer.removeAllViews(); // Clear any previous views
+//        for (TelephonesDTO telephone : yard.getTelephones()) {
+//            // Inflate the contact_item.xml for each phone number
+//            View contactView = getLayoutInflater().inflate(R.layout.contacts_item, contactContainer, false);
+//
+//            // Set the phone number text
+//            TextView phoneTextView = contactView.findViewById(R.id.phoneNumber);
+//            phoneTextView.setText(telephone.getTelephone());
+//
+//            // Optional: make the phone number clickable to dial
+//            phoneTextView.setOnClickListener(v -> {
+//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + telephone.getTelephone()));
+//                startActivity(intent);
+//            });
+//
+//            // Add the inflated contact view to the container
+//            contactContainer.addView(contactView);
+//        }
     }
 }
